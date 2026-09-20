@@ -1,0 +1,24 @@
+﻿# Large data files — not committed to repo
+transactions.csv
+identity.csv
+benchmark_customer_txns.parquet
+device_profiles.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.env
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
