@@ -1,0 +1,27 @@
+// Query: card_window
+// Retrieves transactions for a card within a given hour window around a target timestamp
+USE GRAPH FraudGraph;
+
+CREATE OR REPLACE QUERY card_window(
+    VERTEX<Card> target_card,
+    DATETIME target_ts,
+    INT hours_before,
+    INT hours_after
+) FOR GRAPH FraudGraph RETURNS (ListAccum<VERTEX<Transaction>>) {
+
+    ListAccum<VERTEX<Transaction>> @@txns;
+    DATETIME start_ts;
+    DATETIME end_ts;
+
+    start_ts = datetime_add(target_ts, INTERVAL -hours_before HOUR);
+    end_ts = datetime_add(target_ts, INTERVAL hours_after HOUR);
+
+    CardSet = { target_card };
+
+    TxnSet = SELECT t FROM CardSet:c -(MADE:e)-> Transaction:t
+             WHERE t.ts >= start_ts AND t.ts <= end_ts
+             ACCUM @@txns += t
+             ORDER BY t.ts ASC;
+
+    PRINT @@txns;
+}

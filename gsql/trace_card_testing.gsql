@@ -1,0 +1,34 @@
+// Query: trace_card_testing
+// Detects Policy R5 pattern: 3 or more small online authorizations (< $5) within 1 hour followed by a larger purchase
+USE GRAPH FraudGraph;
+
+CREATE OR REPLACE QUERY trace_card_testing(
+    VERTEX<Card> target_card,
+    DATETIME target_ts
+) FOR GRAPH FraudGraph {
+
+    ListAccum<VERTEX<Transaction>> @@micro_auths;
+    ListAccum<VERTEX<Transaction>> @@larger_purchases;
+    SumAccum<INT> @@is_testing_sequence = 0;
+
+    DATETIME window_start;
+    window_start = datetime_add(target_ts, INTERVAL -2 HOUR);
+
+    CardSet = { target_card };
+
+    TxnSet = SELECT t FROM CardSet:c -(MADE:e)-> Transaction:t
+             WHERE t.ts >= window_start AND t.ts <= target_ts AND t.channel == "online"
+             ACCUM
+                CASE WHEN t.amount < 5.0 THEN
+                    @@micro_auths += t
+                WHEN t.amount >= 20.0 THEN
+                    @@larger_purchases += t
+                END
+             ORDER BY t.ts ASC;
+
+    IF @@micro_auths.size() >= 3 AND @@larger_purchases.size() >= 1 THEN
+        @@is_testing_sequence = 1;
+    END;
+
+    PRINT @@is_testing_sequence, @@micro_auths, @@larger_purchases;
+}

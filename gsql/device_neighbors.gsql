@@ -1,0 +1,34 @@
+// Query: device_neighbors
+// Traverses: DeviceProfile <- FROM_DEVICE - Transaction <- MADE - Card <- OWNS - Customer
+// Finds other cards, customers, and closed cases sharing the exact same device profile
+USE GRAPH FraudGraph;
+
+CREATE OR REPLACE QUERY device_neighbors(
+    VERTEX<DeviceProfile> target_device
+) FOR GRAPH FraudGraph {
+
+    SetAccum<VERTEX<Card>> @@connected_cards;
+    SetAccum<VERTEX<Customer>> @@connected_customers;
+    SetAccum<VERTEX<ClosedCase>> @@linked_closed_cases;
+    SumAccum<INT> @@shared_txn_count = 0;
+
+    DevSet = { target_device };
+
+    // Find all transactions using this device
+    TxnSet = SELECT t FROM DevSet:d <-(FROM_DEVICE:e)- Transaction:t
+             ACCUM @@shared_txn_count += 1;
+
+    // Traverse to cards that made these transactions
+    CardSet = SELECT c FROM TxnSet:t <-(MADE:e)- Card:c
+              ACCUM @@connected_cards += c;
+
+    // Traverse to customers owning these cards
+    CustSet = SELECT cust FROM CardSet:c <-(OWNS:e)- Customer:cust
+              ACCUM @@connected_customers += cust;
+
+    // Traverse to closed cases on these cards
+    CaseSet = SELECT k FROM CardSet:c <-(ON_CARD:e)- ClosedCase:k
+              ACCUM @@linked_closed_cases += k;
+
+    PRINT @@shared_txn_count, @@connected_cards, @@connected_customers, @@linked_closed_cases;
+}

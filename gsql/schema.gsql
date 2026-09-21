@@ -1,0 +1,86 @@
+// TigerGraph GSQL Schema Definition for Fraud Investigation Agent (HHGOA IEEE-CIS)
+// Graph Name: FraudGraph
+
+CREATE VERTEX Customer (
+    PRIMARY_ID customer_id STRING
+) WITH STATS="OUTDEGREE";
+
+CREATE VERTEX Card (
+    PRIMARY_ID card_id STRING,
+    network STRING,
+    card_type STRING
+);
+
+CREATE VERTEX Transaction (
+    PRIMARY_ID txn_id STRING,
+    ts DATETIME,
+    amount DOUBLE,
+    channel STRING,
+    risk_score DOUBLE,
+    product_cd STRING
+);
+
+CREATE VERTEX DeviceProfile (
+    PRIMARY_ID profile_id STRING,
+    device_info STRING,
+    os STRING,
+    browser STRING,
+    screen STRING,
+    is_proxy BOOL
+);
+
+CREATE VERTEX EmailDomain (
+    PRIMARY_ID domain STRING
+);
+
+CREATE VERTEX BillingRegion (
+    PRIMARY_ID region_code STRING,
+    country_code STRING
+);
+
+CREATE VERTEX ClosedCase (
+    PRIMARY_ID case_id STRING,
+    outcome STRING,
+    pattern STRING,
+    exposure_usd DOUBLE,
+    n_txns INT,
+    actions_taken STRING,
+    report_filed STRING,
+    analyst_notes STRING
+);
+
+CREATE VERTEX FraudCase (
+    PRIMARY_ID case_id STRING,
+    status STRING,
+    verdict STRING,
+    fraud_probability DOUBLE,
+    pattern STRING,
+    pattern_description STRING,
+    exposure_usd DOUBLE,
+    summary STRING,
+    sar_filed BOOL,
+    created_at DATETIME
+);
+
+// Graph Edges
+CREATE DIRECTED EDGE OWNS (FROM Customer, TO Card);
+CREATE DIRECTED EDGE MADE (FROM Card, TO Transaction);
+CREATE DIRECTED EDGE FROM_DEVICE (FROM Transaction, TO DeviceProfile);
+CREATE DIRECTED EDGE PURCHASER_EMAIL (FROM Transaction, TO EmailDomain);
+CREATE DIRECTED EDGE BILLED_IN (FROM Transaction, TO BillingRegion);
+CREATE DIRECTED EDGE NEXT (FROM Transaction, TO Transaction);
+
+CREATE DIRECTED EDGE INVOLVES (FROM ClosedCase, TO Transaction);
+CREATE DIRECTED EDGE ON_CARD (FROM ClosedCase, TO Card);
+CREATE UNDIRECTED EDGE CONNECTED_TO (FROM ClosedCase, TO Card);
+
+CREATE DIRECTED EDGE CASE_INVOLVES (FROM FraudCase, TO Transaction);
+CREATE DIRECTED EDGE CASE_ON_CARD (FROM FraudCase, TO Card);
+CREATE DIRECTED EDGE CASE_LINKED_DEVICE (FROM FraudCase, TO DeviceProfile);
+
+CREATE GRAPH FraudGraph (
+    Customer, Card, Transaction, DeviceProfile, EmailDomain, BillingRegion, ClosedCase, FraudCase,
+    OWNS, MADE, FROM_DEVICE, PURCHASER_EMAIL, BILLED_IN, NEXT,
+    INVOLVES, ON_CARD, CONNECTED_TO,
+    CASE_INVOLVES, CASE_ON_CARD, CASE_LINKED_DEVICE
+);

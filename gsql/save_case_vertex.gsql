@@ -1,0 +1,43 @@
+// Query: save_case_vertex
+// Persists the agent's investigation verdict, findings, and linkages as a FraudCase vertex in TigerGraph
+USE GRAPH FraudGraph;
+
+CREATE OR REPLACE QUERY save_case_vertex(
+    STRING case_id,
+    STRING status,
+    STRING verdict,
+    DOUBLE fraud_probability,
+    STRING pattern,
+    STRING pattern_description,
+    DOUBLE exposure_usd,
+    STRING summary,
+    BOOL sar_filed,
+    DATETIME created_at,
+    VERTEX<Card> target_card,
+    ListAccum<STRING> affected_txn_ids,
+    STRING linked_device_profile
+) FOR GRAPH FraudGraph {
+
+    INSERT INTO FraudCase (
+        PRIMARY_ID, status, verdict, fraud_probability, pattern,
+        pattern_description, exposure_usd, summary, sar_filed, created_at
+    ) VALUES (
+        case_id, status, verdict, fraud_probability, pattern,
+        pattern_description, exposure_usd, summary, sar_filed, created_at
+    );
+
+    // Link case to card
+    INSERT INTO CASE_ON_CARD (FROM, TO) VALUES (case_id, target_card);
+
+    // Link case to each affected transaction
+    FOREACH txn_id IN affected_txn_ids DO
+        INSERT INTO CASE_INVOLVES (FROM, TO) VALUES (case_id, txn_id);
+    END;
+
+    // Link case to device profile if present
+    IF linked_device_profile != "" THEN
+        INSERT INTO CASE_LINKED_DEVICE (FROM, TO) VALUES (case_id, linked_device_profile);
+    END;
+
+    PRINT "Case successfully written to TigerGraph memory" AS message;
+}
