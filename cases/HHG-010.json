@@ -94,7 +94,7 @@
   "latency_s": 0.42,
   "customer_id": "C10434",
   "flagged_txn_id": 3506725,
-  "investigated_at": "2026-09-24T18:53:18.002025Z",
+  "investigated_at": "2026-09-24T18:56:25.004232Z",
   "verdict": "FRAUD",
   "confidence": 0.827,
   "rule_engine_fraud_score": 0.827,

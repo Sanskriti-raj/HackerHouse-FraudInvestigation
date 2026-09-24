@@ -83,7 +83,7 @@
   "latency_s": 0.42,
   "customer_id": "C11923",
   "flagged_txn_id": 3583368,
-  "investigated_at": "2026-09-24T18:53:18.227069Z",
+  "investigated_at": "2026-09-24T18:56:25.208425Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.721,
   "rule_engine_fraud_score": 0.459,

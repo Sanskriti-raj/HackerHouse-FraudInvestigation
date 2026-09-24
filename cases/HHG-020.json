@@ -120,7 +120,7 @@
   "latency_s": 0.42,
   "customer_id": "C12265",
   "flagged_txn_id": 3509359,
-  "investigated_at": "2026-09-24T18:53:18.882440Z",
+  "investigated_at": "2026-09-24T18:56:25.861767Z",
   "verdict": "FRAUD",
   "confidence": 0.755,
   "rule_engine_fraud_score": 0.635,

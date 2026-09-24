@@ -48,7 +48,7 @@
       }
     ],
     "similar_prior_cases": [],
-    "summary": "Autonomous investigation confirmed FRAUD for HHG-019. Customer C07987 exhibited critical anomalies including Risk=0.90 >= 0.7, Region 264.0 not in typical ['325.0', '299.0', '330.0']. Immediate containment recommended.",
+    "summary": "Autonomous investigation confirmed FRAUD for HHG-019. Customer C07987 exhibited critical anomalies including Risk=0.90 >= 0.7, Region 264.0 not in typical ['330.0', '299.0', '325.0']. Immediate containment recommended.",
     "written_to_graph": true,
     "graph_case_id": "CASE-2016-019"
   },
@@ -83,7 +83,7 @@
   "sar": {
     "file": true,
     "reason": "Confirmed card not present new device unauthorized transactions on card C07987-K2",
-    "narrative": "Autonomous investigation confirmed FRAUD for HHG-019. Customer C07987 exhibited critical anomalies including Risk=0.90 >= 0.7, Region 264.0 not in typical ['325.0', '299.0', '330.0']. Immediate containment recommended.",
+    "narrative": "Autonomous investigation confirmed FRAUD for HHG-019. Customer C07987 exhibited critical anomalies including Risk=0.90 >= 0.7, Region 264.0 not in typical ['330.0', '299.0', '325.0']. Immediate containment recommended.",
     "subjects": [
       "C07987",
       "C07987-K2"
@@ -100,7 +100,7 @@
   "latency_s": 0.42,
   "customer_id": "C07987",
   "flagged_txn_id": 3503878,
-  "investigated_at": "2026-09-24T18:53:18.751334Z",
+  "investigated_at": "2026-09-24T18:56:25.732099Z",
   "verdict": "FRAUD",
   "confidence": 0.835,
   "rule_engine_fraud_score": 0.835,
@@ -116,14 +116,14 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 264.0 not in typical ['325.0', '299.0', '330.0']",
+      "description": "Region 264.0 not in typical ['330.0', '299.0', '325.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "264.0",
         "typical": [
-          "325.0",
+          "330.0",
           "299.0",
-          "330.0"
+          "325.0"
         ]
       }
     },
@@ -190,7 +190,7 @@
     }
   ],
   "llm_reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-019. High-severity signals triggered: R1_HIGH_RISK, R4_GEO_ANOMALY, R7_SHARED_DEVICE. ML risk score is 0.90.",
-  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-019. Customer C07987 exhibited critical anomalies including Risk=0.90 >= 0.7, Region 264.0 not in typical ['325.0', '299.0', '330.0']. Immediate containment recommended.",
+  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-019. Customer C07987 exhibited critical anomalies including Risk=0.90 >= 0.7, Region 264.0 not in typical ['330.0', '299.0', '325.0']. Immediate containment recommended.",
   "recommended_action": "BLOCK_AND_CALL_CUSTOMER",
   "approval_route": "REQUIRES_ANALYST_APPROVAL",
   "pre_evidence_decision": {
