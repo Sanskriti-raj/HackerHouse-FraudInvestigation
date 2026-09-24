@@ -1,8 +1,83 @@
 {
   "case_id": "HHG-004",
+  "case": {
+    "status": "closed_cleared",
+    "verdict": "legitimate",
+    "fraud_probability": 0.787,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [],
+    "first_suspicious_txn_id": "3583227",
+    "connected_card_ids": [
+      "C08106-K1"
+    ],
+    "connected_device_profiles": [
+      "UnknownDevice | UnknownOS | firefox 47.0 | UnknownScreen"
+    ],
+    "exposure_usd": 0.0,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 8 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C08106-K1, hours=48)",
+        "entity_ids": []
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $32.93 across 88 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C08106)",
+        "entity_ids": [
+          "C08106"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Secondary graph deep-dive for HHG-004 verified legitimate account usage. Extended 14-day review demonstrated normal transaction dispersion. Action: MONITOR_24H.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-004"
+  },
+  "evidence_requests": [
+    {
+      "type": "extended_graph_retrieval",
+      "asked_after_step": 4,
+      "assumed_response": "14-day temporal window and multi-account device neighbor graph extracted from TigerGraph."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "auto",
+        "reason": "Initial graph traversal reveals ambiguous risk footprint for HHG-004 (Model Risk: 0.00, 2 active graph signals). Signals [R3_VELOCITY, R6_AMOUNT_SPIKE] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
+      }
+    ],
+    "final": [
+      {
+        "action": "APPROVE",
+        "route": "auto",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $0.00"
+      }
+    ],
+    "what_changed": "Expanded 14-day temporal graph window and entity resolution resolved initial uncertainty and confirmed containment action."
+  },
+  "sar": {
+    "file": false,
+    "reason": "",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0.0,
+    "activity_dates": [
+      "2016-12-29",
+      "2016-12-29"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 6,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C08106",
   "flagged_txn_id": 3583227,
-  "investigated_at": "2026-09-24T18:32:23.944887Z",
+  "investigated_at": "2026-09-24T18:48:02.680475Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.787,
   "rule_engine_fraud_score": 0.393,

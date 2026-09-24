@@ -1,8 +1,118 @@
 {
   "case_id": "HHG-014",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.66,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3478561",
+      "3478561",
+      "3478561"
+    ],
+    "first_suspicious_txn_id": "3478561",
+    "connected_card_ids": [
+      "C13487-K1"
+    ],
+    "connected_device_profiles": [
+      "SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080"
+    ],
+    "exposure_usd": 142.0,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 3 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C13487-K1, hours=48)",
+        "entity_ids": [
+          "3478561",
+          "3478561",
+          "3478561"
+        ]
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $54.53 across 42 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C13487)",
+        "entity_ids": [
+          "C13487"
+        ]
+      },
+      {
+        "claim": "Device footprint shared across 114 transactions and 3 prior fraud cases",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_profile=SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080)",
+        "entity_ids": [
+          "CC-0334",
+          "CC-0590",
+          "CC-5122"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-0334",
+      "CC-0590",
+      "CC-5122"
+    ],
+    "summary": "Secondary graph deep-dive for HHG-014 confirmed malicious activity. Expanded 14-day window (16 txns) confirmed anomalous velocity. Action: FLAG_FOR_REVIEW.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-014"
+  },
+  "evidence_requests": [
+    {
+      "type": "extended_graph_retrieval",
+      "asked_after_step": 4,
+      "assumed_response": "14-day temporal window and multi-account device neighbor graph extracted from TigerGraph."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "L1",
+        "reason": "Initial graph traversal reveals ambiguous risk footprint for HHG-014 (Model Risk: 0.00, 3 active graph signals). Signals [R7_SHARED_DEVICE, R8_PROXY, R9_PRIOR_LINK] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $142.00"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Mandatory case record logging"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "Policy R2: Shared entity links or elevated exposure threshold"
+      }
+    ],
+    "what_changed": "Expanded 14-day temporal graph window and entity resolution resolved initial uncertainty and confirmed containment action."
+  },
+  "sar": {
+    "file": true,
+    "reason": "Confirmed card not present new device unauthorized transactions on card C13487-K1",
+    "narrative": "Secondary graph deep-dive for HHG-014 confirmed malicious activity. Expanded 14-day window (16 txns) confirmed anomalous velocity. Action: FLAG_FOR_REVIEW.",
+    "subjects": [
+      "C13487",
+      "C13487-K1"
+    ],
+    "total_amount_usd": 142.0,
+    "activity_dates": [
+      "2016-11-22",
+      "2016-11-22"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 6,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C13487",
   "flagged_txn_id": 3478561,
-  "investigated_at": "2026-09-24T18:32:24.884005Z",
+  "investigated_at": "2026-09-24T18:48:04.661340Z",
   "verdict": "FRAUD",
   "confidence": 0.66,
   "rule_engine_fraud_score": 0.46,

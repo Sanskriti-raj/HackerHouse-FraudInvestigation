@@ -1,8 +1,83 @@
 {
   "case_id": "HHG-016",
+  "case": {
+    "status": "closed_cleared",
+    "verdict": "legitimate",
+    "fraud_probability": 0.688,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [],
+    "first_suspicious_txn_id": "3534820",
+    "connected_card_ids": [
+      "C09988-K1"
+    ],
+    "connected_device_profiles": [
+      "Windows | UnknownOS | edge 16.0 | UnknownScreen"
+    ],
+    "exposure_usd": 0.0,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 1 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C09988-K1, hours=48)",
+        "entity_ids": []
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $33.37 across 38 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C09988)",
+        "entity_ids": [
+          "C09988"
+        ]
+      },
+      {
+        "claim": "Device footprint shared across 592 transactions and 0 prior fraud cases",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_profile=Windows | UnknownOS | edge 16.0 | UnknownScreen)",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation resolved case HHG-016 as NOT FRAUD. Activity matches established behavioral baseline with no card testing or syndicate device linkages.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-016"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "auto",
+        "reason": "Investigation indicates legitimate activity for HHG-016. ML risk score (0.00) is within normal parameters and transaction conforms to customer 90-day baseline."
+      }
+    ],
+    "final": [
+      {
+        "action": "APPROVE",
+        "route": "auto",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $0.00"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0.0,
+    "activity_dates": [
+      "2016-12-11",
+      "2016-12-11"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C09988",
   "flagged_txn_id": 3534820,
-  "investigated_at": "2026-09-24T18:32:24.995100Z",
+  "investigated_at": "2026-09-24T18:48:04.885859Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.688,
   "rule_engine_fraud_score": 0.312,

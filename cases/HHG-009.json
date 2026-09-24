@@ -1,8 +1,77 @@
 {
   "case_id": "HHG-009",
+  "case": {
+    "status": "closed_cleared",
+    "verdict": "legitimate",
+    "fraud_probability": 0.668,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [],
+    "first_suspicious_txn_id": "3581141",
+    "connected_card_ids": [
+      "C08299-K1"
+    ],
+    "connected_device_profiles": [
+      "UnknownDevice | UnknownOS | UnknownBrowser | UnknownScreen"
+    ],
+    "exposure_usd": 0.0,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 1 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C08299-K1, hours=48)",
+        "entity_ids": []
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $57.43 across 20 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C08299)",
+        "entity_ids": [
+          "C08299"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation resolved case HHG-009 as NOT FRAUD. Activity matches established behavioral baseline with no card testing or syndicate device linkages.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-009"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "auto",
+        "reason": "Investigation indicates legitimate activity for HHG-009. ML risk score (0.00) is within normal parameters and transaction conforms to customer 90-day baseline."
+      }
+    ],
+    "final": [
+      {
+        "action": "APPROVE",
+        "route": "auto",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $0.00"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0.0,
+    "activity_dates": [
+      "2016-12-28",
+      "2016-12-28"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C08299",
   "flagged_txn_id": 3581141,
-  "investigated_at": "2026-09-24T18:32:24.365434Z",
+  "investigated_at": "2026-09-24T18:48:03.518095Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.668,
   "rule_engine_fraud_score": 0.332,
@@ -10,14 +79,14 @@
   "signals": [
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 203.0 not in typical ['204.0', '337.0', '330.0']",
+      "description": "Region 203.0 not in typical ['330.0', '337.0', '204.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "203.0",
         "typical": [
-          "204.0",
+          "330.0",
           "337.0",
-          "330.0"
+          "204.0"
         ]
       }
     }

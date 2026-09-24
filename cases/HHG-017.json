@@ -1,8 +1,104 @@
 {
   "case_id": "HHG-017",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.699,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3450629",
+      "3450629",
+      "3450629"
+    ],
+    "first_suspicious_txn_id": "3450629",
+    "connected_card_ids": [
+      "C04570-K1"
+    ],
+    "connected_device_profiles": [
+      "Windows | Windows 10 | chrome 65.0 | 1920x1080"
+    ],
+    "exposure_usd": 300.14,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 3 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C04570-K1, hours=48)",
+        "entity_ids": [
+          "3450629",
+          "3450629",
+          "3450629"
+        ]
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $284.83 across 20 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C04570)",
+        "entity_ids": [
+          "C04570"
+        ]
+      },
+      {
+        "claim": "Device footprint shared across 621 transactions and 0 prior fraud cases",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_profile=Windows | Windows 10 | chrome 65.0 | 1920x1080)",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation confirmed FRAUD for HHG-017. Customer C04570 exhibited critical anomalies including Risk=0.57 elevated, Region 204.0 not in typical ['325.0', '315.0', '299.0']. Immediate containment recommended.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-017"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Conclusive graph evidence confirms fraudulent pattern for HHG-017. High-severity signals triggered: R2_ELEVATED_RISK, R4_GEO_ANOMALY, R7_SHARED_DEVICE, R8_PROXY. ML risk score is 0.57."
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $300.14"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Mandatory case record logging"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "Policy R2: Shared entity links or elevated exposure threshold"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "Confirmed card not present new device unauthorized transactions on card C04570-K1",
+    "narrative": "Autonomous investigation confirmed FRAUD for HHG-017. Customer C04570 exhibited critical anomalies including Risk=0.57 elevated, Region 204.0 not in typical ['325.0', '315.0', '299.0']. Immediate containment recommended.",
+    "subjects": [
+      "C04570",
+      "C04570-K1"
+    ],
+    "total_amount_usd": 300.14,
+    "activity_dates": [
+      "2016-11-11",
+      "2016-11-11"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C04570",
   "flagged_txn_id": 3450629,
-  "investigated_at": "2026-09-24T18:32:25.048806Z",
+  "investigated_at": "2026-09-24T18:48:04.982861Z",
   "verdict": "FRAUD",
   "confidence": 0.699,
   "rule_engine_fraud_score": 0.699,
@@ -18,14 +114,14 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 204.0 not in typical ['299.0', '315.0', '325.0']",
+      "description": "Region 204.0 not in typical ['325.0', '315.0', '299.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "204.0",
         "typical": [
-          "299.0",
+          "325.0",
           "315.0",
-          "325.0"
+          "299.0"
         ]
       }
     },
@@ -107,7 +203,7 @@
     }
   ],
   "llm_reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-017. High-severity signals triggered: R2_ELEVATED_RISK, R4_GEO_ANOMALY, R7_SHARED_DEVICE, R8_PROXY. ML risk score is 0.57.",
-  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-017. Customer C04570 exhibited critical anomalies including Risk=0.57 elevated, Region 204.0 not in typical ['299.0', '315.0', '325.0']. Immediate containment recommended.",
+  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-017. Customer C04570 exhibited critical anomalies including Risk=0.57 elevated, Region 204.0 not in typical ['325.0', '315.0', '299.0']. Immediate containment recommended.",
   "recommended_action": "FLAG_FOR_REVIEW",
   "approval_route": "REQUIRES_ANALYST_APPROVAL",
   "pre_evidence_decision": {

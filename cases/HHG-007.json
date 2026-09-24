@@ -1,8 +1,145 @@
 {
   "case_id": "HHG-007",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.785,
+    "pattern": "card_not_present_fraud",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948",
+      "3514948"
+    ],
+    "first_suspicious_txn_id": "3514948",
+    "connected_card_ids": [
+      "C09933-K2"
+    ],
+    "connected_device_profiles": [],
+    "exposure_usd": 14099.73,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 50 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C09933-K2, hours=48)",
+        "entity_ids": [
+          "3514948",
+          "3514948",
+          "3514948",
+          "3514948",
+          "3514948"
+        ]
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $123.49 across 1188 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C09933)",
+        "entity_ids": [
+          "C09933"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation confirmed FRAUD for HHG-007. Customer C09933 exhibited critical anomalies including Risk=0.87 >= 0.7, 50 txns in 48h. Immediate containment recommended.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-007"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Conclusive graph evidence confirms fraudulent pattern for HHG-007. High-severity signals triggered: R1_HIGH_RISK, R3_VELOCITY. ML risk score is 0.87."
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $14099.73"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Mandatory case record logging"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "Policy R2: Shared entity links or elevated exposure threshold"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "Confirmed card not present fraud unauthorized transactions on card C09933-K2",
+    "narrative": "Autonomous investigation confirmed FRAUD for HHG-007. Customer C09933 exhibited critical anomalies including Risk=0.87 >= 0.7, 50 txns in 48h. Immediate containment recommended.",
+    "subjects": [
+      "C09933",
+      "C09933-K2"
+    ],
+    "total_amount_usd": 14099.73,
+    "activity_dates": [
+      "2016-12-05",
+      "2016-12-05"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C09933",
   "flagged_txn_id": 3514948,
-  "investigated_at": "2026-09-24T18:32:24.267783Z",
+  "investigated_at": "2026-09-24T18:48:03.319832Z",
   "verdict": "FRAUD",
   "confidence": 0.785,
   "rule_engine_fraud_score": 0.785,

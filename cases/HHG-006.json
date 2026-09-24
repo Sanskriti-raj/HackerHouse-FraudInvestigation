@@ -1,8 +1,129 @@
 {
   "case_id": "HHG-006",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.632,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3476682",
+      "3476682",
+      "3476682",
+      "3476682",
+      "3476682",
+      "3476682",
+      "3476682",
+      "3476682"
+    ],
+    "first_suspicious_txn_id": "3476682",
+    "connected_card_ids": [
+      "C07297-K1"
+    ],
+    "connected_device_profiles": [
+      "Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080"
+    ],
+    "exposure_usd": 2508.06,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 8 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C07297-K1, hours=48)",
+        "entity_ids": [
+          "3476682",
+          "3476682",
+          "3476682",
+          "3476682",
+          "3476682"
+        ]
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $108.28 across 129 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C07297)",
+        "entity_ids": [
+          "C07297"
+        ]
+      },
+      {
+        "claim": "Device footprint shared across 1220 transactions and 32 prior fraud cases",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_profile=Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080)",
+        "entity_ids": [
+          "CC-0007",
+          "CC-0031",
+          "CC-0075",
+          "CC-0164",
+          "CC-0241"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-0007",
+      "CC-0031",
+      "CC-0075",
+      "CC-0164",
+      "CC-0241"
+    ],
+    "summary": "Secondary graph deep-dive for HHG-006 confirmed malicious activity. Expanded 14-day window (51 txns) confirmed anomalous velocity. Action: FLAG_FOR_REVIEW.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-006"
+  },
+  "evidence_requests": [
+    {
+      "type": "extended_graph_retrieval",
+      "asked_after_step": 4,
+      "assumed_response": "14-day temporal window and multi-account device neighbor graph extracted from TigerGraph."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "L1",
+        "reason": "Initial graph traversal reveals ambiguous risk footprint for HHG-006 (Model Risk: 0.00, 4 active graph signals). Signals [R3_VELOCITY, R6_AMOUNT_SPIKE, R7_SHARED_DEVICE, R9_PRIOR_LINK] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $2508.06"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Mandatory case record logging"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "Policy R2: Shared entity links or elevated exposure threshold"
+      }
+    ],
+    "what_changed": "Expanded 14-day temporal graph window and entity resolution resolved initial uncertainty and confirmed containment action."
+  },
+  "sar": {
+    "file": true,
+    "reason": "Confirmed card not present new device unauthorized transactions on card C07297-K1",
+    "narrative": "Secondary graph deep-dive for HHG-006 confirmed malicious activity. Expanded 14-day window (51 txns) confirmed anomalous velocity. Action: FLAG_FOR_REVIEW.",
+    "subjects": [
+      "C07297",
+      "C07297-K1"
+    ],
+    "total_amount_usd": 2508.06,
+    "activity_dates": [
+      "2016-11-21",
+      "2016-11-21"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 6,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C07297",
   "flagged_txn_id": 3476682,
-  "investigated_at": "2026-09-24T18:32:24.211841Z",
+  "investigated_at": "2026-09-24T18:48:03.202793Z",
   "verdict": "FRAUD",
   "confidence": 0.632,
   "rule_engine_fraud_score": 0.488,

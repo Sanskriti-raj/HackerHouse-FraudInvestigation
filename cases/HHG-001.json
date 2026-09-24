@@ -1,8 +1,110 @@
 {
   "case_id": "HHG-001",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.678,
+    "pattern": "out_of_region_use",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030",
+      "3514030"
+    ],
+    "first_suspicious_txn_id": "3514030",
+    "connected_card_ids": [
+      "C12382-K1"
+    ],
+    "connected_device_profiles": [],
+    "exposure_usd": 1167.96,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 15 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C12382-K1, hours=48)",
+        "entity_ids": [
+          "3514030",
+          "3514030",
+          "3514030",
+          "3514030",
+          "3514030"
+        ]
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $123.87 across 194 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C12382)",
+        "entity_ids": [
+          "C12382"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation confirmed FRAUD for HHG-001. Customer C12382 exhibited critical anomalies including Risk=0.61 elevated, 15 txns in 48h. Immediate containment recommended.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-001"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Conclusive graph evidence confirms fraudulent pattern for HHG-001. High-severity signals triggered: R2_ELEVATED_RISK, R3_VELOCITY, R4_GEO_ANOMALY. ML risk score is 0.61."
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $1167.96"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Mandatory case record logging"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "Policy R2: Shared entity links or elevated exposure threshold"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "Confirmed out of region use unauthorized transactions on card C12382-K1",
+    "narrative": "Autonomous investigation confirmed FRAUD for HHG-001. Customer C12382 exhibited critical anomalies including Risk=0.61 elevated, 15 txns in 48h. Immediate containment recommended.",
+    "subjects": [
+      "C12382",
+      "C12382-K1"
+    ],
+    "total_amount_usd": 1167.96,
+    "activity_dates": [
+      "2016-12-04",
+      "2016-12-04"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C12382",
   "flagged_txn_id": 3514030,
-  "investigated_at": "2026-09-24T18:32:23.624933Z",
+  "investigated_at": "2026-09-24T18:48:02.009276Z",
   "verdict": "FRAUD",
   "confidence": 0.678,
   "rule_engine_fraud_score": 0.678,
@@ -26,14 +128,14 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 444.0 not in typical ['204.0', '264.0', '512.0']",
+      "description": "Region 444.0 not in typical ['204.0', '512.0', '264.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "444.0",
         "typical": [
           "204.0",
-          "264.0",
-          "512.0"
+          "512.0",
+          "264.0"
         ]
       }
     }

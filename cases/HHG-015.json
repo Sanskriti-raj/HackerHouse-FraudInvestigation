@@ -1,8 +1,120 @@
 {
   "case_id": "HHG-015",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.821,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3464869",
+      "3464869",
+      "3464869",
+      "3464869",
+      "3464869"
+    ],
+    "first_suspicious_txn_id": "3464869",
+    "connected_card_ids": [
+      "C03042-K1"
+    ],
+    "connected_device_profiles": [
+      "Trident/7.0 | Windows 8.1 | ie 11.0 for desktop | 1680x1050"
+    ],
+    "exposure_usd": 2452.98,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 5 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C03042-K1, hours=48)",
+        "entity_ids": [
+          "3464869",
+          "3464869",
+          "3464869",
+          "3464869",
+          "3464869"
+        ]
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $128.21 across 21 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C03042)",
+        "entity_ids": [
+          "C03042"
+        ]
+      },
+      {
+        "claim": "Device footprint shared across 9 transactions and 32 prior fraud cases",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_profile=Trident/7.0 | Windows 8.1 | ie 11.0 for desktop | 1680x1050)",
+        "entity_ids": [
+          "CC-0007",
+          "CC-0031",
+          "CC-0075",
+          "CC-0164",
+          "CC-0241"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-0007",
+      "CC-0031",
+      "CC-0075",
+      "CC-0164",
+      "CC-0241"
+    ],
+    "summary": "Autonomous investigation confirmed FRAUD for HHG-015. Customer C03042 exhibited critical anomalies including Risk=0.77 >= 0.7, $599.94 = 4.7x mean $128.21. Immediate containment recommended.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-015"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Conclusive graph evidence confirms fraudulent pattern for HHG-015. High-severity signals triggered: R1_HIGH_RISK, R6_AMOUNT_SPIKE, R7_SHARED_DEVICE, R9_PRIOR_LINK. ML risk score is 0.77."
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $2452.98"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Mandatory case record logging"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "Policy R2: Shared entity links or elevated exposure threshold"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "Confirmed card not present new device unauthorized transactions on card C03042-K1",
+    "narrative": "Autonomous investigation confirmed FRAUD for HHG-015. Customer C03042 exhibited critical anomalies including Risk=0.77 >= 0.7, $599.94 = 4.7x mean $128.21. Immediate containment recommended.",
+    "subjects": [
+      "C03042",
+      "C03042-K1"
+    ],
+    "total_amount_usd": 2452.98,
+    "activity_dates": [
+      "2016-11-17",
+      "2016-11-17"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C03042",
   "flagged_txn_id": 3464869,
-  "investigated_at": "2026-09-24T18:32:24.939245Z",
+  "investigated_at": "2026-09-24T18:48:04.777146Z",
   "verdict": "FRAUD",
   "confidence": 0.821,
   "rule_engine_fraud_score": 0.821,

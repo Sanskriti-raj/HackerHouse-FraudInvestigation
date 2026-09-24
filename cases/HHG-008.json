@@ -1,8 +1,77 @@
 {
   "case_id": "HHG-008",
+  "case": {
+    "status": "closed_cleared",
+    "verdict": "legitimate",
+    "fraud_probability": 0.678,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [],
+    "first_suspicious_txn_id": "3558054",
+    "connected_card_ids": [
+      "C13171-K2"
+    ],
+    "connected_device_profiles": [
+      "UnknownDevice | UnknownOS | chrome 66.0 | UnknownScreen"
+    ],
+    "exposure_usd": 0.0,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 17 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C13171-K2, hours=48)",
+        "entity_ids": []
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $52.49 across 457 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C13171)",
+        "entity_ids": [
+          "C13171"
+        ]
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation resolved case HHG-008 as NOT FRAUD. Activity matches established behavioral baseline with no card testing or syndicate device linkages.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-008"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "auto",
+        "reason": "Investigation indicates legitimate activity for HHG-008. ML risk score (0.00) is within normal parameters and transaction conforms to customer 90-day baseline."
+      }
+    ],
+    "final": [
+      {
+        "action": "APPROVE",
+        "route": "auto",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $0.00"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": false,
+    "reason": "",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0.0,
+    "activity_dates": [
+      "2016-12-19",
+      "2016-12-19"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C13171",
   "flagged_txn_id": 3558054,
-  "investigated_at": "2026-09-24T18:32:24.316996Z",
+  "investigated_at": "2026-09-24T18:48:03.428207Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.678,
   "rule_engine_fraud_score": 0.322,

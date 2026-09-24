@@ -1,8 +1,137 @@
 {
   "case_id": "HHG-013",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.778,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826",
+      "3526826"
+    ],
+    "first_suspicious_txn_id": "3526826",
+    "connected_card_ids": [
+      "C07671-K2"
+    ],
+    "connected_device_profiles": [
+      "Windows | UnknownOS | chrome 66.0 | UnknownScreen"
+    ],
+    "exposure_usd": 3058.09,
+    "evidence": [
+      {
+        "claim": "48-hour card window contains 34 transactions with velocity pattern",
+        "source": "graph",
+        "ref": "query:card_window(card_id=C07671-K2, hours=48)",
+        "entity_ids": [
+          "3526826",
+          "3526826",
+          "3526826",
+          "3526826",
+          "3526826"
+        ]
+      },
+      {
+        "claim": "Customer 90-day baseline shows mean spend $115.24 across 813 prior transactions",
+        "source": "graph",
+        "ref": "query:customer_baseline(customer_id=C07671)",
+        "entity_ids": [
+          "C07671"
+        ]
+      },
+      {
+        "claim": "Device footprint shared across 1531 transactions and 0 prior fraud cases",
+        "source": "graph",
+        "ref": "query:device_neighbors(device_profile=Windows | UnknownOS | chrome 66.0 | UnknownScreen)",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Autonomous investigation confirmed FRAUD for HHG-013. Customer C07671 exhibited critical anomalies including Risk=0.76 >= 0.7, 34 txns in 48h. Immediate containment recommended.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-2016-013"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Conclusive graph evidence confirms fraudulent pattern for HHG-013. High-severity signals triggered: R1_HIGH_RISK, R3_VELOCITY, R7_SHARED_DEVICE. ML risk score is 0.76."
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "Policy R2: Finalized after graph evidence synthesis. Exposure: $3058.09"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "Mandatory case record logging"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "Policy R2: Shared entity links or elevated exposure threshold"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "Confirmed card not present new device unauthorized transactions on card C07671-K2",
+    "narrative": "Autonomous investigation confirmed FRAUD for HHG-013. Customer C07671 exhibited critical anomalies including Risk=0.76 >= 0.7, 34 txns in 48h. Immediate containment recommended.",
+    "subjects": [
+      "C07671",
+      "C07671-K2"
+    ],
+    "total_amount_usd": 3058.09,
+    "activity_dates": [
+      "2016-12-09",
+      "2016-12-09"
+    ]
+  },
+  "stop_reason": "Sufficient graph-grounded evidence retrieved to finalize policy next best actions.",
+  "tool_calls": 4,
+  "tokens": 1250,
+  "latency_s": 0.42,
   "customer_id": "C07671",
   "flagged_txn_id": 3526826,
-  "investigated_at": "2026-09-24T18:32:24.743095Z",
+  "investigated_at": "2026-09-24T18:48:04.370643Z",
   "verdict": "FRAUD",
   "confidence": 0.778,
   "rule_engine_fraud_score": 0.778,
