@@ -1,127 +1,148 @@
 {
   "total": 20,
-  "fraud": 11,
-  "not_fraud": 9,
+  "fraud": 13,
+  "not_fraud": 7,
+  "llm_reasoned": 0,
   "results": [
     {
       "case_id": "HHG-001",
       "verdict": "FRAUD",
       "confidence": 0.678,
-      "action": "FLAG_FOR_REVIEW"
+      "action": "FLAG_FOR_REVIEW",
+      "llm_used": false
     },
     {
       "case_id": "HHG-002",
       "verdict": "FRAUD",
       "confidence": 0.757,
-      "action": "BLOCK_AND_CALL_CUSTOMER"
+      "action": "BLOCK_AND_CALL_CUSTOMER",
+      "llm_used": false
     },
     {
       "case_id": "HHG-003",
       "verdict": "NOT FRAUD",
-      "confidence": 0.602,
-      "action": "MONITOR_24H"
+      "confidence": 0.782,
+      "action": "MONITOR_24H",
+      "llm_used": false
     },
     {
       "case_id": "HHG-004",
       "verdict": "NOT FRAUD",
-      "confidence": 0.607,
-      "action": "MONITOR_24H"
+      "confidence": 0.787,
+      "action": "MONITOR_24H",
+      "llm_used": false
     },
     {
       "case_id": "HHG-005",
       "verdict": "FRAUD",
-      "confidence": 0.573,
-      "action": "FLAG_FOR_REVIEW"
+      "confidence": 0.693,
+      "action": "FLAG_FOR_REVIEW",
+      "llm_used": false
     },
     {
       "case_id": "HHG-006",
-      "verdict": "NOT FRAUD",
-      "confidence": 0.512,
-      "action": "MONITOR_24H"
+      "verdict": "FRAUD",
+      "confidence": 0.632,
+      "action": "FLAG_FOR_REVIEW",
+      "llm_used": false
     },
     {
       "case_id": "HHG-007",
       "verdict": "FRAUD",
       "confidence": 0.785,
-      "action": "BLOCK_AND_CALL_CUSTOMER"
+      "action": "BLOCK_AND_CALL_CUSTOMER",
+      "llm_used": false
     },
     {
       "case_id": "HHG-008",
       "verdict": "NOT FRAUD",
       "confidence": 0.678,
-      "action": "MONITOR_24H"
+      "action": "MONITOR_24H",
+      "llm_used": false
     },
     {
       "case_id": "HHG-009",
       "verdict": "NOT FRAUD",
       "confidence": 0.668,
-      "action": "MONITOR_24H"
+      "action": "MONITOR_24H",
+      "llm_used": false
     },
     {
       "case_id": "HHG-010",
       "verdict": "FRAUD",
       "confidence": 0.827,
-      "action": "BLOCK_AND_CALL_CUSTOMER"
+      "action": "BLOCK_AND_CALL_CUSTOMER",
+      "llm_used": false
     },
     {
       "case_id": "HHG-011",
       "verdict": "NOT FRAUD",
-      "confidence": 0.541,
-      "action": "MONITOR_24H"
+      "confidence": 0.721,
+      "action": "MONITOR_24H",
+      "llm_used": false
     },
     {
       "case_id": "HHG-012",
       "verdict": "FRAUD",
       "confidence": 0.657,
-      "action": "FLAG_FOR_REVIEW"
+      "action": "FLAG_FOR_REVIEW",
+      "llm_used": false
     },
     {
       "case_id": "HHG-013",
       "verdict": "FRAUD",
       "confidence": 0.778,
-      "action": "BLOCK_AND_CALL_CUSTOMER"
+      "action": "BLOCK_AND_CALL_CUSTOMER",
+      "llm_used": false
     },
     {
       "case_id": "HHG-014",
-      "verdict": "NOT FRAUD",
-      "confidence": 0.54,
-      "action": "MONITOR_24H"
+      "verdict": "FRAUD",
+      "confidence": 0.66,
+      "action": "FLAG_FOR_REVIEW",
+      "llm_used": false
     },
     {
       "case_id": "HHG-015",
       "verdict": "FRAUD",
       "confidence": 0.821,
-      "action": "BLOCK_AND_CALL_CUSTOMER"
+      "action": "BLOCK_AND_CALL_CUSTOMER",
+      "llm_used": false
     },
     {
       "case_id": "HHG-016",
       "verdict": "NOT FRAUD",
       "confidence": 0.688,
-      "action": "MONITOR_24H"
+      "action": "MONITOR_24H",
+      "llm_used": false
     },
     {
       "case_id": "HHG-017",
       "verdict": "FRAUD",
       "confidence": 0.699,
-      "action": "FLAG_FOR_REVIEW"
+      "action": "FLAG_FOR_REVIEW",
+      "llm_used": false
     },
     {
       "case_id": "HHG-018",
       "verdict": "NOT FRAUD",
       "confidence": 0.678,
-      "action": "MONITOR_24H"
+      "action": "MONITOR_24H",
+      "llm_used": false
     },
     {
       "case_id": "HHG-019",
       "verdict": "FRAUD",
       "confidence": 0.835,
-      "action": "BLOCK_AND_CALL_CUSTOMER"
+      "action": "BLOCK_AND_CALL_CUSTOMER",
+      "llm_used": false
     },
     {
       "case_id": "HHG-020",
       "verdict": "FRAUD",
-      "confidence": 0.635,
-      "action": "FLAG_FOR_REVIEW"
+      "confidence": 0.755,
+      "action": "BLOCK_AND_CALL_CUSTOMER",
+      "llm_used": false
     }
   ]
 }

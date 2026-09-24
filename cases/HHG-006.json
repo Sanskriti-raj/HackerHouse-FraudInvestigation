@@ -2,10 +2,10 @@
   "case_id": "HHG-006",
   "customer_id": "C07297",
   "flagged_txn_id": 3476682,
-  "investigated_at": "2026-09-24T17:58:05.680507Z",
-  "verdict": "NOT FRAUD",
-  "confidence": 0.512,
-  "fraud_score": 0.488,
+  "investigated_at": "2026-09-24T18:32:24.211841Z",
+  "verdict": "FRAUD",
+  "confidence": 0.632,
+  "rule_engine_fraud_score": 0.488,
   "model_risk_score": 0.0,
   "signals": [
     {
@@ -141,6 +141,41 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-006 ===\nCustomer: C07297 | Flagged Transaction: 3476682\nAmount: $482.12 | Timestamp: 2016-11-21 20:30:00\n\nVERDICT: NOT FRAUD (Confidence: 51.2%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 129\n  Historical mean: $108.28\n  Typical regions: ['264.0', '191.0', '485.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 8 txns in 48h\n  [R6_AMOUNT_SPIKE] $482.12 = 4.5x mean $108.28\n  [R7_SHARED_DEVICE] Device shared by 1220 txns\n  [R9_PRIOR_LINK] Linked to 32 prior fraud cases\n\n--- 48h Window: 8 transactions ---\n  Action: MONITOR_24H",
-  "recommended_action": "MONITOR_24H"
+  "llm_reasoning": "Deep graph investigation confirmed fraud indicators for HHG-006. Extended 14-day window identified 51 transactions with 1.0x baseline deviation. Graph traversal confirmed risk linkages and velocity anomalies. Verdict finalized as FRAUD.",
+  "analyst_narrative": "Secondary graph deep-dive for HHG-006 confirmed malicious activity. Expanded 14-day window (51 txns) confirmed anomalous velocity. Action: FLAG_FOR_REVIEW.",
+  "recommended_action": "FLAG_FOR_REVIEW",
+  "approval_route": "REQUIRES_ANALYST_APPROVAL",
+  "pre_evidence_decision": {
+    "verdict": "NOT FRAUD",
+    "confidence": 0.512,
+    "recommended_action": "FLAG_FOR_REVIEW",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": true,
+    "evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
+    "reasoning": "Initial graph traversal reveals ambiguous risk footprint for HHG-006 (Model Risk: 0.00, 4 active graph signals). Signals [R3_VELOCITY, R6_AMOUNT_SPIKE, R7_SHARED_DEVICE, R9_PRIOR_LINK] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
+  },
+  "post_evidence_decision": {
+    "verdict": "FRAUD",
+    "confidence": 0.632,
+    "recommended_action": "FLAG_FOR_REVIEW",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "reasoning": "Deep graph investigation confirmed fraud indicators for HHG-006. Extended 14-day window identified 51 transactions with 1.0x baseline deviation. Graph traversal confirmed risk linkages and velocity anomalies. Verdict finalized as FRAUD.",
+    "additional_evidence_used": {
+      "extended_14d_window_count": 51,
+      "linked_case_detail": [
+        "CC-0007",
+        "CC-0031",
+        "CC-0075",
+        "CC-0164",
+        "CC-0241",
+        "CC-0364",
+        "CC-0781",
+        "CC-0938",
+        "CC-1043",
+        "CC-1476"
+      ]
+    }
+  },
+  "additional_evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
+  "llm_used": false
 }

@@ -1,4 +1,4 @@
-﻿"""
+"""
 MCP Server — HackerHouse TigerGraph Fraud Investigation
 ========================================================
 Model Context Protocol server exposing fraud investigation tools
@@ -111,73 +111,120 @@ class MCPHandler(BaseHTTPRequestHandler):
             self._json_response({"error": "Not found"}, 404)
 
     def do_POST(self):
-        from datetime import datetime
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length)) if length else {}
         path = urlparse(self.path).path
 
-        if path != "/call":
-            self._json_response({"error": "Only /call endpoint supported"}, 404)
-            return
+        # Support standard JSON-RPC 2.0 and REST /call endpoints
+        is_jsonrpc = ("jsonrpc" in body) or (path in ["/", "/rpc", "/jsonrpc"])
+        rpc_id = body.get("id", 1)
 
-        tool_name = body.get("name")
-        params = body.get("arguments", {})
+        def make_reply(res=None, err=None):
+            if is_jsonrpc:
+                if err:
+                    return {"jsonrpc": "2.0", "id": rpc_id, "error": {"code": -32603, "message": str(err)}}
+                return {"jsonrpc": "2.0", "id": rpc_id, "result": res}
+            else:
+                if err:
+                    return {"error": str(err)}
+                return res
+
+        # Handle MCP JSON-RPC methods
+        method = body.get("method")
+        if method == "initialize":
+            self._json_response(make_reply({
+                "protocolVersion": "2024-11-05",
+                "capabilities": {"tools": {}},
+                "serverInfo": {"name": "tigergraph-fraud-investigation-mcp", "version": "1.0.0"}
+            }))
+            return
+        elif method == "tools/list":
+            self._json_response(make_reply({"tools": list(TOOLS.values())}))
+            return
+        elif method == "ping":
+            self._json_response(make_reply({}))
+            return
+        elif method == "tools/call":
+            params = body.get("params", {})
+            tool_name = params.get("name")
+            tool_args = params.get("arguments", {})
+        else:
+            # Fallback REST /call
+            tool_name = body.get("name")
+            tool_args = body.get("arguments", {})
+
+        if not tool_name:
+            self._json_response(make_reply(err="Missing tool name or unknown method"), 400)
+            return
 
         try:
             if tool_name == "card_window":
                 from datetime import datetime as dt
-                ts = dt.strptime(params["target_ts"], "%Y-%m-%d %H:%M:%S")
+                ts = dt.strptime(tool_args["target_ts"], "%Y-%m-%d %H:%M:%S")
                 result = MCPHandler.engine.query_card_window(
-                    params["card_id"], ts,
-                    params.get("hours_before", 48),
-                    params.get("hours_after", 48)
+                    tool_args["card_id"], ts,
+                    tool_args.get("hours_before", 48),
+                    tool_args.get("hours_after", 48)
                 )
-                self._json_response({"content": [{"type": "json", "data": result}]})
+                self._json_response(make_reply({"content": [{"type": "text", "text": json.dumps(result, default=str)}]}))
 
             elif tool_name == "device_neighbors":
-                result = MCPHandler.engine.query_device_neighbors(params["device_profile"])
-                self._json_response({"content": [{"type": "json", "data": result}]})
+                result = MCPHandler.engine.query_device_neighbors(tool_args["device_profile"])
+                self._json_response(make_reply({"content": [{"type": "text", "text": json.dumps(result, default=str)}]}))
 
             elif tool_name == "card_testing_check":
                 from datetime import datetime as dt
-                ts = dt.strptime(params["target_ts"], "%Y-%m-%d %H:%M:%S")
-                result = MCPHandler.engine.detect_card_testing(params["card_id"], ts)
-                self._json_response({"content": [{"type": "json", "data": result}]})
+                ts = dt.strptime(tool_args["target_ts"], "%Y-%m-%d %H:%M:%S")
+                result = MCPHandler.engine.detect_card_testing(tool_args["card_id"], ts)
+                self._json_response(make_reply({"content": [{"type": "text", "text": json.dumps(result, default=str)}]}))
 
             elif tool_name == "investigate_case":
-                case_id = params["case_id"]
+                case_id = tool_args["case_id"]
                 cases_dir = os.path.join(DATA_DIR, "cases")
                 case_file = os.path.join(cases_dir, f"{case_id}.json")
                 if os.path.exists(case_file):
                     with open(case_file) as f:
                         result = json.load(f)
                 else:
-                    result = {"error": f"Case {case_id} not yet investigated. Run fraud_agent.py first."}
-                self._json_response({"content": [{"type": "json", "data": result}]})
+                    # Dynamically investigate using the loaded agent
+                    deep_file = os.path.join(DATA_DIR, "deep_case_analysis.json")
+                    if os.path.exists(deep_file) and MCPHandler.agent:
+                        with open(deep_file) as f:
+                            raw_cases = json.load(f)
+                        matched = [c for c in raw_cases if c.get("case_id") == case_id]
+                        if matched:
+                            result = MCPHandler.agent.investigate(matched[0])
+                        else:
+                            result = {"error": f"Case {case_id} not found in benchmark data"}
+                    else:
+                        result = {"error": f"Case {case_id} not yet investigated."}
+                self._json_response(make_reply({"content": [{"type": "text", "text": json.dumps(result, default=str)}]}))
 
             elif tool_name == "customer_baseline":
                 from datetime import datetime as dt
-                ts = dt.strptime(params["before_ts"], "%Y-%m-%d %H:%M:%S")
-                result = MCPHandler.engine.query_customer_baseline(params["customer_id"], ts)
-                self._json_response({"content": [{"type": "json", "data": result}]})
+                ts = dt.strptime(tool_args["before_ts"], "%Y-%m-%d %H:%M:%S")
+                result = MCPHandler.engine.query_customer_baseline(tool_args["customer_id"], ts)
+                self._json_response(make_reply({"content": [{"type": "text", "text": json.dumps(result, default=str)}]}))
 
             else:
-                self._json_response({"error": f"Unknown tool: {tool_name}"}, 400)
+                self._json_response(make_reply(err=f"Unknown tool: {tool_name}"), 400)
 
         except Exception as e:
             logger.error(f"Tool call error: {e}")
-            self._json_response({"error": str(e)}, 500)
+            self._json_response(make_reply(err=str(e)), 500)
 
 
 def main(port=8080):
-    logger.info(f"Loading engine from {DATA_DIR}...")
+    logger.info(f"Loading TigerGraph Engine and Agent from {DATA_DIR}...")
     MCPHandler.engine = TigerGraphEngine(DATA_DIR)
+    MCPHandler.agent = FraudInvestigationAgent(DATA_DIR)
     logger.info(f"Starting MCP server on port {port}...")
     server = HTTPServer(("0.0.0.0", port), MCPHandler)
     logger.info(f"MCP server ready at http://localhost:{port}")
-    logger.info(f"  GET  /tools   — list available tools")
-    logger.info(f"  GET  /health  — server health")
-    logger.info(f"  POST /call    — call a tool")
+    logger.info(f"  GET  /tools       — list available tools")
+    logger.info(f"  GET  /health      — server health")
+    logger.info(f"  POST /call        — REST tool call")
+    logger.info(f"  POST /rpc or /    — MCP JSON-RPC 2.0 (initialize, tools/list, tools/call)")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

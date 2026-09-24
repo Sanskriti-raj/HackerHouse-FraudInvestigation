@@ -2,10 +2,10 @@
   "case_id": "HHG-003",
   "customer_id": "C08623",
   "flagged_txn_id": 3530164,
-  "investigated_at": "2026-09-24T17:58:05.449262Z",
+  "investigated_at": "2026-09-24T18:32:23.817507Z",
   "verdict": "NOT FRAUD",
-  "confidence": 0.602,
-  "fraud_score": 0.398,
+  "confidence": 0.782,
+  "rule_engine_fraud_score": 0.398,
   "model_risk_score": 0.0,
   "signals": [
     {
@@ -18,14 +18,14 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 330.0 not in typical ['315.0', '299.0', '204.0']",
+      "description": "Region 330.0 not in typical ['204.0', '299.0', '315.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "330.0",
         "typical": [
-          "315.0",
+          "204.0",
           "299.0",
-          "204.0"
+          "315.0"
         ]
       }
     }
@@ -72,6 +72,30 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-003 ===\nCustomer: C08623 | Flagged Transaction: 3530164\nAmount: $49.00 | Timestamp: 2016-12-10 13:01:21\n\nVERDICT: NOT FRAUD (Confidence: 60.2%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 456\n  Historical mean: $124.79\n  Typical regions: ['299.0', '315.0', '204.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 26 txns in 48h\n  [R4_GEO_ANOMALY] Region 330.0 not in typical ['315.0', '299.0', '204.0']\n\n--- 48h Window: 26 transactions ---\n  Action: MONITOR_24H",
-  "recommended_action": "MONITOR_24H"
+  "llm_reasoning": "Deep graph investigation resolved uncertainty for HHG-003. Extended 14-day history (190 txns) indicates benign merchant interaction and zero shared device fraud links. Verdict: NOT FRAUD.",
+  "analyst_narrative": "Secondary graph deep-dive for HHG-003 verified legitimate account usage. Extended 14-day review demonstrated normal transaction dispersion. Action: MONITOR_24H.",
+  "recommended_action": "MONITOR_24H",
+  "approval_route": "AUTO_APPROVED",
+  "pre_evidence_decision": {
+    "verdict": "NOT FRAUD",
+    "confidence": 0.602,
+    "recommended_action": "FLAG_FOR_REVIEW",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": true,
+    "evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
+    "reasoning": "Initial graph traversal reveals ambiguous risk footprint for HHG-003 (Model Risk: 0.00, 2 active graph signals). Signals [R3_VELOCITY, R4_GEO_ANOMALY] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
+  },
+  "post_evidence_decision": {
+    "verdict": "NOT FRAUD",
+    "confidence": 0.782,
+    "recommended_action": "MONITOR_24H",
+    "approval_route": "AUTO_APPROVED",
+    "reasoning": "Deep graph investigation resolved uncertainty for HHG-003. Extended 14-day history (190 txns) indicates benign merchant interaction and zero shared device fraud links. Verdict: NOT FRAUD.",
+    "additional_evidence_used": {
+      "extended_14d_window_count": 190,
+      "linked_case_detail": []
+    }
+  },
+  "additional_evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
+  "llm_used": false
 }

@@ -1,0 +1,210 @@
+{
+  "total_score": 13,
+  "max_possible_score": 33,
+  "accuracy": 0.6,
+  "correct": 12,
+  "total_cases": 20,
+  "case_scores": [
+    {
+      "case_id": "HHG-001",
+      "ground_truth": "NOT FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.678,
+      "score": -1,
+      "correct": false,
+      "signals": 3,
+      "action": "FLAG_FOR_REVIEW"
+    },
+    {
+      "case_id": "HHG-002",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.757,
+      "score": 2,
+      "correct": true,
+      "signals": 2,
+      "action": "BLOCK_AND_CALL_CUSTOMER"
+    },
+    {
+      "case_id": "HHG-003",
+      "ground_truth": "FRAUD",
+      "verdict": "NOT FRAUD",
+      "confidence": 0.782,
+      "score": -1,
+      "correct": false,
+      "signals": 2,
+      "action": "MONITOR_24H"
+    },
+    {
+      "case_id": "HHG-004",
+      "ground_truth": "NOT FRAUD",
+      "verdict": "NOT FRAUD",
+      "confidence": 0.787,
+      "score": 1,
+      "correct": true,
+      "signals": 2,
+      "action": "MONITOR_24H"
+    },
+    {
+      "case_id": "HHG-005",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.693,
+      "score": 2,
+      "correct": true,
+      "signals": 2,
+      "action": "FLAG_FOR_REVIEW"
+    },
+    {
+      "case_id": "HHG-006",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.632,
+      "score": 2,
+      "correct": true,
+      "signals": 4,
+      "action": "FLAG_FOR_REVIEW"
+    },
+    {
+      "case_id": "HHG-007",
+      "ground_truth": "NOT FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.785,
+      "score": -1,
+      "correct": false,
+      "signals": 2,
+      "action": "BLOCK_AND_CALL_CUSTOMER"
+    },
+    {
+      "case_id": "HHG-008",
+      "ground_truth": "FRAUD",
+      "verdict": "NOT FRAUD",
+      "confidence": 0.678,
+      "score": -1,
+      "correct": false,
+      "signals": 1,
+      "action": "MONITOR_24H"
+    },
+    {
+      "case_id": "HHG-009",
+      "ground_truth": "NOT FRAUD",
+      "verdict": "NOT FRAUD",
+      "confidence": 0.668,
+      "score": 1,
+      "correct": true,
+      "signals": 1,
+      "action": "MONITOR_24H"
+    },
+    {
+      "case_id": "HHG-010",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.827,
+      "score": 2,
+      "correct": true,
+      "signals": 3,
+      "action": "BLOCK_AND_CALL_CUSTOMER"
+    },
+    {
+      "case_id": "HHG-011",
+      "ground_truth": "FRAUD",
+      "verdict": "NOT FRAUD",
+      "confidence": 0.721,
+      "score": -1,
+      "correct": false,
+      "signals": 3,
+      "action": "MONITOR_24H"
+    },
+    {
+      "case_id": "HHG-012",
+      "ground_truth": "NOT FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.657,
+      "score": -1,
+      "correct": false,
+      "signals": 3,
+      "action": "FLAG_FOR_REVIEW"
+    },
+    {
+      "case_id": "HHG-013",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.778,
+      "score": 2,
+      "correct": true,
+      "signals": 3,
+      "action": "BLOCK_AND_CALL_CUSTOMER"
+    },
+    {
+      "case_id": "HHG-014",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.66,
+      "score": 2,
+      "correct": true,
+      "signals": 3,
+      "action": "FLAG_FOR_REVIEW"
+    },
+    {
+      "case_id": "HHG-015",
+      "ground_truth": "NOT FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.821,
+      "score": -1,
+      "correct": false,
+      "signals": 4,
+      "action": "BLOCK_AND_CALL_CUSTOMER"
+    },
+    {
+      "case_id": "HHG-016",
+      "ground_truth": "FRAUD",
+      "verdict": "NOT FRAUD",
+      "confidence": 0.688,
+      "score": -1,
+      "correct": false,
+      "signals": 1,
+      "action": "MONITOR_24H"
+    },
+    {
+      "case_id": "HHG-017",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.699,
+      "score": 2,
+      "correct": true,
+      "signals": 4,
+      "action": "FLAG_FOR_REVIEW"
+    },
+    {
+      "case_id": "HHG-018",
+      "ground_truth": "NOT FRAUD",
+      "verdict": "NOT FRAUD",
+      "confidence": 0.678,
+      "score": 1,
+      "correct": true,
+      "signals": 1,
+      "action": "MONITOR_24H"
+    },
+    {
+      "case_id": "HHG-019",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.835,
+      "score": 2,
+      "correct": true,
+      "signals": 3,
+      "action": "BLOCK_AND_CALL_CUSTOMER"
+    },
+    {
+      "case_id": "HHG-020",
+      "ground_truth": "FRAUD",
+      "verdict": "FRAUD",
+      "confidence": 0.755,
+      "score": 2,
+      "correct": true,
+      "signals": 3,
+      "action": "BLOCK_AND_CALL_CUSTOMER"
+    }
+  ],
+  "estimated_rank_percentile": "Bottom 60%"
+}

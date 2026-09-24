@@ -2,10 +2,10 @@
   "case_id": "HHG-017",
   "customer_id": "C04570",
   "flagged_txn_id": 3450629,
-  "investigated_at": "2026-09-24T17:58:06.552841Z",
+  "investigated_at": "2026-09-24T18:32:25.048806Z",
   "verdict": "FRAUD",
   "confidence": 0.699,
-  "fraud_score": 0.699,
+  "rule_engine_fraud_score": 0.699,
   "model_risk_score": 0.57,
   "signals": [
     {
@@ -18,13 +18,13 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 204.0 not in typical ['315.0', '299.0', '325.0']",
+      "description": "Region 204.0 not in typical ['299.0', '315.0', '325.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "204.0",
         "typical": [
-          "315.0",
           "299.0",
+          "315.0",
           "325.0"
         ]
       }
@@ -106,6 +106,20 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-017 ===\nCustomer: C04570 | Flagged Transaction: 3450629\nAmount: $100.09 | Timestamp: 2016-11-11 23:46:24\n\nVERDICT: FRAUD (Confidence: 69.9%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 20\n  Historical mean: $284.83\n  Typical regions: ['325.0', '299.0', '315.0']\n\n--- Fraud Signals ---\n  [R2_ELEVATED_RISK] Risk=0.57 elevated\n  [R4_GEO_ANOMALY] Region 204.0 not in typical ['315.0', '299.0', '325.0']\n  [R7_SHARED_DEVICE] Device shared by 621 txns\n  [R8_PROXY] Proxy/VPN: IP_PROXY:HIDDEN\n\n--- 48h Window: 3 transactions ---\n  Action: FLAG_FOR_REVIEW",
-  "recommended_action": "FLAG_FOR_REVIEW"
+  "llm_reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-017. High-severity signals triggered: R2_ELEVATED_RISK, R4_GEO_ANOMALY, R7_SHARED_DEVICE, R8_PROXY. ML risk score is 0.57.",
+  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-017. Customer C04570 exhibited critical anomalies including Risk=0.57 elevated, Region 204.0 not in typical ['299.0', '315.0', '325.0']. Immediate containment recommended.",
+  "recommended_action": "FLAG_FOR_REVIEW",
+  "approval_route": "REQUIRES_ANALYST_APPROVAL",
+  "pre_evidence_decision": {
+    "verdict": "FRAUD",
+    "confidence": 0.699,
+    "recommended_action": "FLAG_FOR_REVIEW",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": false,
+    "evidence_requested": null,
+    "reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-017. High-severity signals triggered: R2_ELEVATED_RISK, R4_GEO_ANOMALY, R7_SHARED_DEVICE, R8_PROXY. ML risk score is 0.57."
+  },
+  "post_evidence_decision": null,
+  "additional_evidence_requested": null,
+  "llm_used": false
 }

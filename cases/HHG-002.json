@@ -2,10 +2,10 @@
   "case_id": "HHG-002",
   "customer_id": "C11891",
   "flagged_txn_id": 3478782,
-  "investigated_at": "2026-09-24T17:58:05.366768Z",
+  "investigated_at": "2026-09-24T18:32:23.673955Z",
   "verdict": "FRAUD",
   "confidence": 0.757,
-  "fraud_score": 0.757,
+  "rule_engine_fraud_score": 0.757,
   "model_risk_score": 0.79,
   "signals": [
     {
@@ -65,6 +65,20 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-002 ===\nCustomer: C11891 | Flagged Transaction: 3478782\nAmount: $292.36 | Timestamp: 2016-11-22 17:27:07\n\nVERDICT: FRAUD (Confidence: 75.8%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 28\n  Historical mean: $41.17\n  Typical regions: []\n\n--- Fraud Signals ---\n  [R1_HIGH_RISK] Risk=0.79 >= 0.7\n  [R6_AMOUNT_SPIKE] $292.36 = 7.1x mean $41.17\n\n--- 48h Window: 1 transactions ---\n  Action: BLOCK_AND_CALL_CUSTOMER",
-  "recommended_action": "BLOCK_AND_CALL_CUSTOMER"
+  "llm_reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-002. High-severity signals triggered: R1_HIGH_RISK, R6_AMOUNT_SPIKE. ML risk score is 0.79.",
+  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-002. Customer C11891 exhibited critical anomalies including Risk=0.79 >= 0.7, $292.36 = 7.1x mean $41.17. Immediate containment recommended.",
+  "recommended_action": "BLOCK_AND_CALL_CUSTOMER",
+  "approval_route": "REQUIRES_ANALYST_APPROVAL",
+  "pre_evidence_decision": {
+    "verdict": "FRAUD",
+    "confidence": 0.757,
+    "recommended_action": "BLOCK_AND_CALL_CUSTOMER",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": false,
+    "evidence_requested": null,
+    "reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-002. High-severity signals triggered: R1_HIGH_RISK, R6_AMOUNT_SPIKE. ML risk score is 0.79."
+  },
+  "post_evidence_decision": null,
+  "additional_evidence_requested": null,
+  "llm_used": false
 }

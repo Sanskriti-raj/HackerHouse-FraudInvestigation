@@ -2,10 +2,10 @@
   "case_id": "HHG-012",
   "customer_id": "C05876",
   "flagged_txn_id": 3553342,
-  "investigated_at": "2026-09-24T17:58:06.152940Z",
+  "investigated_at": "2026-09-24T18:32:24.682628Z",
   "verdict": "FRAUD",
   "confidence": 0.657,
-  "fraud_score": 0.657,
+  "rule_engine_fraud_score": 0.657,
   "model_risk_score": 0.55,
   "signals": [
     {
@@ -26,14 +26,14 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 494.0 not in typical ['272.0', '325.0', '264.0']",
+      "description": "Region 494.0 not in typical ['272.0', '264.0', '325.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "494.0",
         "typical": [
           "272.0",
-          "325.0",
-          "264.0"
+          "264.0",
+          "325.0"
         ]
       }
     }
@@ -80,6 +80,20 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-012 ===\nCustomer: C05876 | Flagged Transaction: 3553342\nAmount: $30.91 | Timestamp: 2016-12-18 04:00:31\n\nVERDICT: FRAUD (Confidence: 65.7%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 477\n  Historical mean: $86.67\n  Typical regions: ['325.0', '272.0', '264.0']\n\n--- Fraud Signals ---\n  [R2_ELEVATED_RISK] Risk=0.55 elevated\n  [R3_VELOCITY] 24 txns in 48h\n  [R4_GEO_ANOMALY] Region 494.0 not in typical ['272.0', '325.0', '264.0']\n\n--- 48h Window: 24 transactions ---\n  Action: FLAG_FOR_REVIEW",
-  "recommended_action": "FLAG_FOR_REVIEW"
+  "llm_reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-012. High-severity signals triggered: R2_ELEVATED_RISK, R3_VELOCITY, R4_GEO_ANOMALY. ML risk score is 0.55.",
+  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-012. Customer C05876 exhibited critical anomalies including Risk=0.55 elevated, 24 txns in 48h. Immediate containment recommended.",
+  "recommended_action": "FLAG_FOR_REVIEW",
+  "approval_route": "REQUIRES_ANALYST_APPROVAL",
+  "pre_evidence_decision": {
+    "verdict": "FRAUD",
+    "confidence": 0.657,
+    "recommended_action": "FLAG_FOR_REVIEW",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": false,
+    "evidence_requested": null,
+    "reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-012. High-severity signals triggered: R2_ELEVATED_RISK, R3_VELOCITY, R4_GEO_ANOMALY. ML risk score is 0.55."
+  },
+  "post_evidence_decision": null,
+  "additional_evidence_requested": null,
+  "llm_used": false
 }

@@ -2,10 +2,10 @@
   "case_id": "HHG-018",
   "customer_id": "C02354",
   "flagged_txn_id": 3491361,
-  "investigated_at": "2026-09-24T17:58:06.662496Z",
+  "investigated_at": "2026-09-24T18:32:25.112444Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.678,
-  "fraud_score": 0.322,
+  "rule_engine_fraud_score": 0.322,
   "model_risk_score": 0.0,
   "signals": [
     {
@@ -59,6 +59,20 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-018 ===\nCustomer: C02354 | Flagged Transaction: 3491361\nAmount: $39.08 | Timestamp: 2016-11-27 13:41:26\n\nVERDICT: NOT FRAUD (Confidence: 67.8%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 3083\n  Historical mean: $140.17\n  Typical regions: ['325.0', '126.0', '204.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 158 txns in 48h\n\n--- 48h Window: 158 transactions ---\n  Action: MONITOR_24H",
-  "recommended_action": "MONITOR_24H"
+  "llm_reasoning": "Investigation indicates legitimate activity for HHG-018. ML risk score (0.00) is within normal parameters and transaction conforms to customer 90-day baseline.",
+  "analyst_narrative": "Autonomous investigation resolved case HHG-018 as NOT FRAUD. Activity matches established behavioral baseline with no card testing or syndicate device linkages.",
+  "recommended_action": "MONITOR_24H",
+  "approval_route": "AUTO_APPROVED",
+  "pre_evidence_decision": {
+    "verdict": "NOT FRAUD",
+    "confidence": 0.678,
+    "recommended_action": "MONITOR_24H",
+    "approval_route": "AUTO_APPROVED",
+    "needs_more_evidence": false,
+    "evidence_requested": null,
+    "reasoning": "Investigation indicates legitimate activity for HHG-018. ML risk score (0.00) is within normal parameters and transaction conforms to customer 90-day baseline."
+  },
+  "post_evidence_decision": null,
+  "additional_evidence_requested": null,
+  "llm_used": false
 }

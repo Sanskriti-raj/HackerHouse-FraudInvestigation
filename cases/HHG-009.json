@@ -2,22 +2,22 @@
   "case_id": "HHG-009",
   "customer_id": "C08299",
   "flagged_txn_id": 3581141,
-  "investigated_at": "2026-09-24T17:58:05.912810Z",
+  "investigated_at": "2026-09-24T18:32:24.365434Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.668,
-  "fraud_score": 0.332,
+  "rule_engine_fraud_score": 0.332,
   "model_risk_score": 0.0,
   "signals": [
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 203.0 not in typical ['330.0', '337.0', '204.0']",
+      "description": "Region 203.0 not in typical ['204.0', '337.0', '330.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "203.0",
         "typical": [
-          "330.0",
+          "204.0",
           "337.0",
-          "204.0"
+          "330.0"
         ]
       }
     }
@@ -67,6 +67,20 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-009 ===\nCustomer: C08299 | Flagged Transaction: 3581141\nAmount: $30.02 | Timestamp: 2016-12-28 12:10:53\n\nVERDICT: NOT FRAUD (Confidence: 66.8%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 20\n  Historical mean: $57.43\n  Typical regions: ['330.0', '204.0', '337.0']\n\n--- Fraud Signals ---\n  [R4_GEO_ANOMALY] Region 203.0 not in typical ['330.0', '337.0', '204.0']\n\n--- 48h Window: 1 transactions ---\n  Action: MONITOR_24H",
-  "recommended_action": "MONITOR_24H"
+  "llm_reasoning": "Investigation indicates legitimate activity for HHG-009. ML risk score (0.00) is within normal parameters and transaction conforms to customer 90-day baseline.",
+  "analyst_narrative": "Autonomous investigation resolved case HHG-009 as NOT FRAUD. Activity matches established behavioral baseline with no card testing or syndicate device linkages.",
+  "recommended_action": "MONITOR_24H",
+  "approval_route": "AUTO_APPROVED",
+  "pre_evidence_decision": {
+    "verdict": "NOT FRAUD",
+    "confidence": 0.668,
+    "recommended_action": "MONITOR_24H",
+    "approval_route": "AUTO_APPROVED",
+    "needs_more_evidence": false,
+    "evidence_requested": null,
+    "reasoning": "Investigation indicates legitimate activity for HHG-009. ML risk score (0.00) is within normal parameters and transaction conforms to customer 90-day baseline."
+  },
+  "post_evidence_decision": null,
+  "additional_evidence_requested": null,
+  "llm_used": false
 }

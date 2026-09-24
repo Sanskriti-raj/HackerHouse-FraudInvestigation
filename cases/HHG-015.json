@@ -2,10 +2,10 @@
   "case_id": "HHG-015",
   "customer_id": "C03042",
   "flagged_txn_id": 3464869,
-  "investigated_at": "2026-09-24T17:58:06.391628Z",
+  "investigated_at": "2026-09-24T18:32:24.939245Z",
   "verdict": "FRAUD",
   "confidence": 0.821,
-  "fraud_score": 0.821,
+  "rule_engine_fraud_score": 0.821,
   "model_risk_score": 0.77,
   "signals": [
     {
@@ -138,6 +138,20 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-015 ===\nCustomer: C03042 | Flagged Transaction: 3464869\nAmount: $599.94 | Timestamp: 2016-11-17 14:03:36\n\nVERDICT: FRAUD (Confidence: 82.1%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 21\n  Historical mean: $128.21\n  Typical regions: ['299.0', '325.0', '126.0']\n\n--- Fraud Signals ---\n  [R1_HIGH_RISK] Risk=0.77 >= 0.7\n  [R6_AMOUNT_SPIKE] $599.94 = 4.7x mean $128.21\n  [R7_SHARED_DEVICE] Device shared by 9 txns\n  [R9_PRIOR_LINK] Linked to 32 prior fraud cases\n\n--- 48h Window: 5 transactions ---\n  Action: BLOCK_AND_CALL_CUSTOMER",
-  "recommended_action": "BLOCK_AND_CALL_CUSTOMER"
+  "llm_reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-015. High-severity signals triggered: R1_HIGH_RISK, R6_AMOUNT_SPIKE, R7_SHARED_DEVICE, R9_PRIOR_LINK. ML risk score is 0.77.",
+  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-015. Customer C03042 exhibited critical anomalies including Risk=0.77 >= 0.7, $599.94 = 4.7x mean $128.21. Immediate containment recommended.",
+  "recommended_action": "BLOCK_AND_CALL_CUSTOMER",
+  "approval_route": "REQUIRES_ANALYST_APPROVAL",
+  "pre_evidence_decision": {
+    "verdict": "FRAUD",
+    "confidence": 0.821,
+    "recommended_action": "BLOCK_AND_CALL_CUSTOMER",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": false,
+    "evidence_requested": null,
+    "reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-015. High-severity signals triggered: R1_HIGH_RISK, R6_AMOUNT_SPIKE, R7_SHARED_DEVICE, R9_PRIOR_LINK. ML risk score is 0.77."
+  },
+  "post_evidence_decision": null,
+  "additional_evidence_requested": null,
+  "llm_used": false
 }

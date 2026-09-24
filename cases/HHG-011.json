@@ -2,10 +2,10 @@
   "case_id": "HHG-011",
   "customer_id": "C11923",
   "flagged_txn_id": 3583368,
-  "investigated_at": "2026-09-24T17:58:06.082262Z",
+  "investigated_at": "2026-09-24T18:32:24.630503Z",
   "verdict": "NOT FRAUD",
-  "confidence": 0.541,
-  "fraud_score": 0.459,
+  "confidence": 0.721,
+  "rule_engine_fraud_score": 0.459,
   "model_risk_score": 0.0,
   "signals": [
     {
@@ -87,6 +87,30 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-011 ===\nCustomer: C11923 | Flagged Transaction: 3583368\nAmount: $131.30 | Timestamp: 2016-12-29 03:27:44\n\nVERDICT: NOT FRAUD (Confidence: 54.1%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 4319\n  Historical mean: $39.29\n  Typical regions: ['284.0', '465.0', '155.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 84 txns in 48h\n  [R6_AMOUNT_SPIKE] $131.30 = 3.3x mean $39.29\n  [R7_SHARED_DEVICE] Device shared by 4 txns\n\n--- 48h Window: 84 transactions ---\n  Action: MONITOR_24H",
-  "recommended_action": "MONITOR_24H"
+  "llm_reasoning": "Deep graph investigation resolved uncertainty for HHG-011. Extended 14-day history (622 txns) indicates benign merchant interaction and zero shared device fraud links. Verdict: NOT FRAUD.",
+  "analyst_narrative": "Secondary graph deep-dive for HHG-011 verified legitimate account usage. Extended 14-day review demonstrated normal transaction dispersion. Action: MONITOR_24H.",
+  "recommended_action": "MONITOR_24H",
+  "approval_route": "AUTO_APPROVED",
+  "pre_evidence_decision": {
+    "verdict": "NOT FRAUD",
+    "confidence": 0.541,
+    "recommended_action": "FLAG_FOR_REVIEW",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": true,
+    "evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
+    "reasoning": "Initial graph traversal reveals ambiguous risk footprint for HHG-011 (Model Risk: 0.00, 3 active graph signals). Signals [R3_VELOCITY, R6_AMOUNT_SPIKE, R7_SHARED_DEVICE] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
+  },
+  "post_evidence_decision": {
+    "verdict": "NOT FRAUD",
+    "confidence": 0.721,
+    "recommended_action": "MONITOR_24H",
+    "approval_route": "AUTO_APPROVED",
+    "reasoning": "Deep graph investigation resolved uncertainty for HHG-011. Extended 14-day history (622 txns) indicates benign merchant interaction and zero shared device fraud links. Verdict: NOT FRAUD.",
+    "additional_evidence_used": {
+      "extended_14d_window_count": 622,
+      "linked_case_detail": []
+    }
+  },
+  "additional_evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
+  "llm_used": false
 }

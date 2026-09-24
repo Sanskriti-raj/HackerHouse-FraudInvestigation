@@ -2,10 +2,10 @@
   "case_id": "HHG-007",
   "customer_id": "C09933",
   "flagged_txn_id": 3514948,
-  "investigated_at": "2026-09-24T17:58:05.764360Z",
+  "investigated_at": "2026-09-24T18:32:24.267783Z",
   "verdict": "FRAUD",
   "confidence": 0.785,
-  "fraud_score": 0.785,
+  "rule_engine_fraud_score": 0.785,
   "model_risk_score": 0.87,
   "signals": [
     {
@@ -67,6 +67,20 @@
       }
     }
   ],
-  "analyst_narrative": "=== Investigation Report: HHG-007 ===\nCustomer: C09933 | Flagged Transaction: 3514948\nAmount: $111.92 | Timestamp: 2016-12-05 00:46:14\n\nVERDICT: FRAUD (Confidence: 78.5%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 1188\n  Historical mean: $123.49\n  Typical regions: ['264.0', '204.0', '325.0']\n\n--- Fraud Signals ---\n  [R1_HIGH_RISK] Risk=0.87 >= 0.7\n  [R3_VELOCITY] 50 txns in 48h\n\n--- 48h Window: 50 transactions ---\n  Action: BLOCK_AND_CALL_CUSTOMER",
-  "recommended_action": "BLOCK_AND_CALL_CUSTOMER"
+  "llm_reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-007. High-severity signals triggered: R1_HIGH_RISK, R3_VELOCITY. ML risk score is 0.87.",
+  "analyst_narrative": "Autonomous investigation confirmed FRAUD for HHG-007. Customer C09933 exhibited critical anomalies including Risk=0.87 >= 0.7, 50 txns in 48h. Immediate containment recommended.",
+  "recommended_action": "BLOCK_AND_CALL_CUSTOMER",
+  "approval_route": "REQUIRES_ANALYST_APPROVAL",
+  "pre_evidence_decision": {
+    "verdict": "FRAUD",
+    "confidence": 0.785,
+    "recommended_action": "BLOCK_AND_CALL_CUSTOMER",
+    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "needs_more_evidence": false,
+    "evidence_requested": null,
+    "reasoning": "Conclusive graph evidence confirms fraudulent pattern for HHG-007. High-severity signals triggered: R1_HIGH_RISK, R3_VELOCITY. ML risk score is 0.87."
+  },
+  "post_evidence_decision": null,
+  "additional_evidence_requested": null,
+  "llm_used": false
 }
