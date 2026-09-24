@@ -216,8 +216,8 @@ class MCPHandler(BaseHTTPRequestHandler):
 
 def main(port=8080):
     logger.info(f"Loading TigerGraph Engine and Agent from {DATA_DIR}...")
-    MCPHandler.engine = TigerGraphEngine(DATA_DIR)
     MCPHandler.agent = FraudInvestigationAgent(DATA_DIR)
+    MCPHandler.engine = MCPHandler.agent.engine
     logger.info(f"Starting MCP server on port {port}...")
     server = HTTPServer(("0.0.0.0", port), MCPHandler)
     logger.info(f"MCP server ready at http://localhost:{port}")

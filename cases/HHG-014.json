@@ -112,7 +112,7 @@
   "latency_s": 0.42,
   "customer_id": "C13487",
   "flagged_txn_id": 3478561,
-  "investigated_at": "2026-09-24T18:48:04.661340Z",
+  "investigated_at": "2026-09-24T18:53:18.469035Z",
   "verdict": "FRAUD",
   "confidence": 0.66,
   "rule_engine_fraud_score": 0.46,
@@ -208,15 +208,15 @@
       }
     }
   ],
-  "llm_reasoning": "Deep graph investigation confirmed fraud indicators for HHG-014. Extended 14-day window identified 16 transactions with 1.0x baseline deviation. Graph traversal confirmed risk linkages and velocity anomalies. Verdict finalized as FRAUD.",
+  "llm_reasoning": "Deep graph investigation confirmed fraud indicators for HHG-014. Extended 14-day window identified 16 transactions with 1.1x baseline deviation. Graph traversal confirmed risk linkages and velocity anomalies. Verdict finalized as FRAUD.",
   "analyst_narrative": "Secondary graph deep-dive for HHG-014 confirmed malicious activity. Expanded 14-day window (16 txns) confirmed anomalous velocity. Action: FLAG_FOR_REVIEW.",
   "recommended_action": "FLAG_FOR_REVIEW",
   "approval_route": "REQUIRES_ANALYST_APPROVAL",
   "pre_evidence_decision": {
     "verdict": "NOT FRAUD",
     "confidence": 0.54,
-    "recommended_action": "FLAG_FOR_REVIEW",
-    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "recommended_action": "MONITOR_24H",
+    "approval_route": "AUTO_APPROVED",
     "needs_more_evidence": true,
     "evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
     "reasoning": "Initial graph traversal reveals ambiguous risk footprint for HHG-014 (Model Risk: 0.00, 3 active graph signals). Signals [R7_SHARED_DEVICE, R8_PROXY, R9_PRIOR_LINK] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
@@ -226,9 +226,10 @@
     "confidence": 0.66,
     "recommended_action": "FLAG_FOR_REVIEW",
     "approval_route": "REQUIRES_ANALYST_APPROVAL",
-    "reasoning": "Deep graph investigation confirmed fraud indicators for HHG-014. Extended 14-day window identified 16 transactions with 1.0x baseline deviation. Graph traversal confirmed risk linkages and velocity anomalies. Verdict finalized as FRAUD.",
+    "reasoning": "Deep graph investigation confirmed fraud indicators for HHG-014. Extended 14-day window identified 16 transactions with 1.1x baseline deviation. Graph traversal confirmed risk linkages and velocity anomalies. Verdict finalized as FRAUD.",
     "additional_evidence_used": {
       "extended_14d_window_count": 16,
+      "historical_baseline_ratio": 1.1,
       "linked_case_detail": [
         "CC-0334",
         "CC-0590",

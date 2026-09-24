@@ -125,8 +125,15 @@ class FraudInvestigationAgent:
             try:
                 wide_win = self.engine.query_card_window(card, ts, 24 * 14, 24 * 14)
                 extra["extended_14d_window_count"] = len(wide_win)
+                if wide_win:
+                    wide_mean = sum(float(t.get("amount") or 0) for t in wide_win) / len(wide_win)
+                    hist_mean = float(base.get("mean_amount") or 0)
+                    extra["historical_baseline_ratio"] = round(wide_mean / hist_mean, 2) if hist_mean > 0 else 1.0
+                else:
+                    extra["historical_baseline_ratio"] = 1.0
             except Exception as e:
                 extra["extended_window_error"] = str(e)
+                extra["historical_baseline_ratio"] = 1.0
             extra["linked_case_detail"] = devn.get("linked_closed_cases", [])[:10]
 
         return {"card_window": win, "baseline": base, "device_neighbors": devn,
@@ -290,7 +297,7 @@ needs_more_evidence must be false."""
         """Runs the LLM or Graph-Grounded Analytical Reasoning pass(es).
         Always populates pre_evidence_decision and, if uncertain, gathers deeper graph
         evidence and populates post_evidence_decision with full explainable reasoning."""
-        trace = {"llm_used": _llm_available, "pre_evidence_decision": None, "post_evidence_decision": None}
+        trace = {"llm_used": False, "pre_evidence_decision": None, "post_evidence_decision": None}
         cid = case["case_id"]
         cust = case["customer_id"]
         risk = float(case.get("model_risk_score") or 0.0)
@@ -302,6 +309,7 @@ needs_more_evidence must be false."""
             try:
                 sys1, usr1 = self._build_llm_prompt(case, evidence, sigs, prelim_verdict, prelim_conf, prelim_score)
                 pass1 = self._call_llm(sys1, usr1)
+                trace["llm_used"] = True
                 trace["pre_evidence_decision"] = {
                     "verdict": pass1["verdict"], "confidence": pass1["confidence"],
                     "recommended_action": pass1["recommended_action"],
@@ -327,16 +335,17 @@ needs_more_evidence must be false."""
                     return pass2, trace
                 return pass1, trace
             except Exception as e:
-                logger.warning(f"[{cid}] LLM call error ({e}); switching to Graph Analytical Synthesis.")
+                logger.warning(f"[{cid}] LLM call error ({e}); switching to deterministic template fallback.")
+                trace["llm_used"] = False
 
-        # Graph-Grounded Analytical Synthesis (Zero-hallucination agentic fallback)
+        # Deterministic template fallback (used when LLM is unavailable or fails)
         is_uncertain = (prelim_conf < UNCERTAINTY_THRESHOLD) or (len(sigs) >= 1 and 0.45 <= prelim_score <= 0.58)
         
         if is_uncertain:
             req_desc = "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance."
             reasoning_p1 = (f"Initial graph traversal reveals ambiguous risk footprint for {cid} (Model Risk: {risk:.2f}, {len(sigs)} active graph signals). "
                             f"Signals [{', '.join(sig_codes) or 'None'}] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence.")
-            action_p1 = "FLAG_FOR_REVIEW"
+            action_p1 = self._action(prelim_verdict, prelim_conf)
             narrative_p1 = f"Case {cid} flagged with ${amt:.2f} transaction. Stage-1 graph evidence presents mixed indicators ({len(sigs)} signals). Triggering Stage-2 deep graph retrieval."
             
             trace["pre_evidence_decision"] = {

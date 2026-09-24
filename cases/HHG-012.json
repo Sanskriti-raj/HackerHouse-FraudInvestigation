@@ -113,7 +113,7 @@
   "latency_s": 0.42,
   "customer_id": "C05876",
   "flagged_txn_id": 3553342,
-  "investigated_at": "2026-09-24T18:48:04.238877Z",
+  "investigated_at": "2026-09-24T18:53:18.280703Z",
   "verdict": "FRAUD",
   "confidence": 0.657,
   "rule_engine_fraud_score": 0.657,
@@ -137,14 +137,14 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 494.0 not in typical ['325.0', '272.0', '264.0']",
+      "description": "Region 494.0 not in typical ['325.0', '264.0', '272.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "494.0",
         "typical": [
           "325.0",
-          "272.0",
-          "264.0"
+          "264.0",
+          "272.0"
         ]
       }
     }

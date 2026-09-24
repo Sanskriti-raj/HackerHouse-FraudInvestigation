@@ -75,7 +75,7 @@
   "latency_s": 0.42,
   "customer_id": "C08623",
   "flagged_txn_id": 3530164,
-  "investigated_at": "2026-09-24T18:48:02.403887Z",
+  "investigated_at": "2026-09-24T18:53:17.412822Z",
   "verdict": "NOT FRAUD",
   "confidence": 0.782,
   "rule_engine_fraud_score": 0.398,
@@ -91,14 +91,14 @@
     },
     {
       "code": "R4_GEO_ANOMALY",
-      "description": "Region 330.0 not in typical ['204.0', '315.0', '299.0']",
+      "description": "Region 330.0 not in typical ['315.0', '299.0', '204.0']",
       "weight": 1.8,
       "evidence": {
         "flagged": "330.0",
         "typical": [
-          "204.0",
           "315.0",
-          "299.0"
+          "299.0",
+          "204.0"
         ]
       }
     }
@@ -152,8 +152,8 @@
   "pre_evidence_decision": {
     "verdict": "NOT FRAUD",
     "confidence": 0.602,
-    "recommended_action": "FLAG_FOR_REVIEW",
-    "approval_route": "REQUIRES_ANALYST_APPROVAL",
+    "recommended_action": "MONITOR_24H",
+    "approval_route": "AUTO_APPROVED",
     "needs_more_evidence": true,
     "evidence_requested": "Extended 14-day temporal window, device syndicate cluster analysis, and customer spending variance.",
     "reasoning": "Initial graph traversal reveals ambiguous risk footprint for HHG-003 (Model Risk: 0.00, 2 active graph signals). Signals [R3_VELOCITY, R4_GEO_ANOMALY] present conflicting velocity vs baseline metrics. Next action deferred pending deep graph evidence."
@@ -166,6 +166,7 @@
     "reasoning": "Deep graph investigation resolved uncertainty for HHG-003. Extended 14-day history (190 txns) indicates benign merchant interaction and zero shared device fraud links. Verdict: NOT FRAUD.",
     "additional_evidence_used": {
       "extended_14d_window_count": 190,
+      "historical_baseline_ratio": 1.24,
       "linked_case_detail": []
     }
   },
