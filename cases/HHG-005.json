@@ -1,0 +1,87 @@
+{
+  "case_id": "HHG-005",
+  "customer_id": "C02923",
+  "flagged_txn_id": 3523199,
+  "investigated_at": "2026-09-24T17:58:05.587124Z",
+  "verdict": "FRAUD",
+  "confidence": 0.573,
+  "fraud_score": 0.573,
+  "model_risk_score": 0.54,
+  "signals": [
+    {
+      "code": "R2_ELEVATED_RISK",
+      "description": "Risk=0.54 elevated",
+      "weight": 1.2,
+      "evidence": {
+        "risk": 0.54
+      }
+    },
+    {
+      "code": "R7_SHARED_DEVICE",
+      "description": "Device shared by 168 txns",
+      "weight": 1.2,
+      "evidence": {
+        "dev": "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768",
+        "shared": 168
+      }
+    }
+  ],
+  "signal_count": 2,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 1
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 31,
+        "mean_amount": 123.77,
+        "max_amount": 226.07,
+        "std_amount": 34.57,
+        "typical_regions": [
+          "330.0",
+          "324.0"
+        ],
+        "primary_region": "330.0",
+        "channels": {
+          "in_person": 28,
+          "online": 3
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "device_profile": "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768",
+        "shared_txn_count": 168,
+        "sample_txn_ids": [
+          "3008757",
+          "3001959",
+          "3014272",
+          "3001702",
+          "3020515",
+          "3020422",
+          "3002591",
+          "3006949",
+          "3007209",
+          "3026362"
+        ],
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3523199"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-005 ===\nCustomer: C02923 | Flagged Transaction: 3523199\nAmount: $100.07 | Timestamp: 2016-12-07 21:38:37\n\nVERDICT: FRAUD (Confidence: 57.2%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 31\n  Historical mean: $123.77\n  Typical regions: ['330.0', '324.0']\n\n--- Fraud Signals ---\n  [R2_ELEVATED_RISK] Risk=0.54 elevated\n  [R7_SHARED_DEVICE] Device shared by 168 txns\n\n--- 48h Window: 1 transactions ---\n  Action: FLAG_FOR_REVIEW",
+  "recommended_action": "FLAG_FOR_REVIEW"
+}

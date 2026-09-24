@@ -1,0 +1,146 @@
+{
+  "case_id": "HHG-006",
+  "customer_id": "C07297",
+  "flagged_txn_id": 3476682,
+  "investigated_at": "2026-09-24T17:58:05.680507Z",
+  "verdict": "NOT FRAUD",
+  "confidence": 0.512,
+  "fraud_score": 0.488,
+  "model_risk_score": 0.0,
+  "signals": [
+    {
+      "code": "R3_VELOCITY",
+      "description": "8 txns in 48h",
+      "weight": 1.5,
+      "evidence": {
+        "count": 8
+      }
+    },
+    {
+      "code": "R6_AMOUNT_SPIKE",
+      "description": "$482.12 = 4.5x mean $108.28",
+      "weight": 1.5,
+      "evidence": {
+        "amt": 482.12,
+        "mean": 108.28
+      }
+    },
+    {
+      "code": "R7_SHARED_DEVICE",
+      "description": "Device shared by 1220 txns",
+      "weight": 1.2,
+      "evidence": {
+        "dev": "Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080",
+        "shared": 1220
+      }
+    },
+    {
+      "code": "R9_PRIOR_LINK",
+      "description": "Linked to 32 prior fraud cases",
+      "weight": 1.5,
+      "evidence": {
+        "cases": [
+          "CC-0007",
+          "CC-0031",
+          "CC-0075",
+          "CC-0164",
+          "CC-0241"
+        ]
+      }
+    }
+  ],
+  "signal_count": 4,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 8
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 129,
+        "mean_amount": 108.28,
+        "max_amount": 1104.0,
+        "std_amount": 137.76,
+        "typical_regions": [
+          "264.0",
+          "191.0",
+          "485.0"
+        ],
+        "primary_region": "264.0",
+        "channels": {
+          "in_person": 129
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "device_profile": "Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080",
+        "shared_txn_count": 1220,
+        "sample_txn_ids": [
+          "3000179",
+          "3003600",
+          "3010759",
+          "3010894",
+          "3014805",
+          "3004354",
+          "3011426",
+          "3001634",
+          "3005140",
+          "3005050"
+        ],
+        "linked_closed_cases": [
+          "CC-0007",
+          "CC-0031",
+          "CC-0075",
+          "CC-0164",
+          "CC-0241",
+          "CC-0364",
+          "CC-0781",
+          "CC-0938",
+          "CC-1043",
+          "CC-1476",
+          "CC-1960",
+          "CC-2014",
+          "CC-2079",
+          "CC-2636",
+          "CC-2750",
+          "CC-2888",
+          "CC-2910",
+          "CC-2989",
+          "CC-3082",
+          "CC-3150",
+          "CC-3235",
+          "CC-3368",
+          "CC-3423",
+          "CC-3942",
+          "CC-4342",
+          "CC-4416",
+          "CC-4446",
+          "CC-4521",
+          "CC-4943",
+          "CC-5111",
+          "CC-5285",
+          "CC-5531"
+        ]
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3476602",
+          "3476633",
+          "3476665",
+          "3476682"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-006 ===\nCustomer: C07297 | Flagged Transaction: 3476682\nAmount: $482.12 | Timestamp: 2016-11-21 20:30:00\n\nVERDICT: NOT FRAUD (Confidence: 51.2%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 129\n  Historical mean: $108.28\n  Typical regions: ['264.0', '191.0', '485.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 8 txns in 48h\n  [R6_AMOUNT_SPIKE] $482.12 = 4.5x mean $108.28\n  [R7_SHARED_DEVICE] Device shared by 1220 txns\n  [R9_PRIOR_LINK] Linked to 32 prior fraud cases\n\n--- 48h Window: 8 transactions ---\n  Action: MONITOR_24H",
+  "recommended_action": "MONITOR_24H"
+}

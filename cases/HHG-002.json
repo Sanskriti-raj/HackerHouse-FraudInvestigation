@@ -1,0 +1,70 @@
+{
+  "case_id": "HHG-002",
+  "customer_id": "C11891",
+  "flagged_txn_id": 3478782,
+  "investigated_at": "2026-09-24T17:58:05.366768Z",
+  "verdict": "FRAUD",
+  "confidence": 0.757,
+  "fraud_score": 0.757,
+  "model_risk_score": 0.79,
+  "signals": [
+    {
+      "code": "R1_HIGH_RISK",
+      "description": "Risk=0.79 >= 0.7",
+      "weight": 2.5,
+      "evidence": {
+        "risk": 0.79
+      }
+    },
+    {
+      "code": "R6_AMOUNT_SPIKE",
+      "description": "$292.36 = 7.1x mean $41.17",
+      "weight": 1.5,
+      "evidence": {
+        "amt": 292.36,
+        "mean": 41.17
+      }
+    }
+  ],
+  "signal_count": 2,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 1
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 28,
+        "mean_amount": 41.17,
+        "max_amount": 90.54,
+        "std_amount": 19.69,
+        "typical_regions": [],
+        "primary_region": null,
+        "channels": {
+          "online": 28
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "shared_txn_count": 0,
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3478782"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-002 ===\nCustomer: C11891 | Flagged Transaction: 3478782\nAmount: $292.36 | Timestamp: 2016-11-22 17:27:07\n\nVERDICT: FRAUD (Confidence: 75.8%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 28\n  Historical mean: $41.17\n  Typical regions: []\n\n--- Fraud Signals ---\n  [R1_HIGH_RISK] Risk=0.79 >= 0.7\n  [R6_AMOUNT_SPIKE] $292.36 = 7.1x mean $41.17\n\n--- 48h Window: 1 transactions ---\n  Action: BLOCK_AND_CALL_CUSTOMER",
+  "recommended_action": "BLOCK_AND_CALL_CUSTOMER"
+}

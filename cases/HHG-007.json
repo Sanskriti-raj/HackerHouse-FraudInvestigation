@@ -1,0 +1,72 @@
+{
+  "case_id": "HHG-007",
+  "customer_id": "C09933",
+  "flagged_txn_id": 3514948,
+  "investigated_at": "2026-09-24T17:58:05.764360Z",
+  "verdict": "FRAUD",
+  "confidence": 0.785,
+  "fraud_score": 0.785,
+  "model_risk_score": 0.87,
+  "signals": [
+    {
+      "code": "R1_HIGH_RISK",
+      "description": "Risk=0.87 >= 0.7",
+      "weight": 2.5,
+      "evidence": {
+        "risk": 0.87
+      }
+    },
+    {
+      "code": "R3_VELOCITY",
+      "description": "50 txns in 48h",
+      "weight": 1.5,
+      "evidence": {
+        "count": 50
+      }
+    }
+  ],
+  "signal_count": 2,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 50
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 1188,
+        "mean_amount": 123.49,
+        "max_amount": 2310.2,
+        "std_amount": 153.24,
+        "typical_regions": [
+          "264.0",
+          "204.0",
+          "325.0"
+        ],
+        "primary_region": "264.0",
+        "channels": {
+          "in_person": 1128,
+          "online": 60
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "shared_txn_count": 0,
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": []
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-007 ===\nCustomer: C09933 | Flagged Transaction: 3514948\nAmount: $111.92 | Timestamp: 2016-12-05 00:46:14\n\nVERDICT: FRAUD (Confidence: 78.5%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 1188\n  Historical mean: $123.49\n  Typical regions: ['264.0', '204.0', '325.0']\n\n--- Fraud Signals ---\n  [R1_HIGH_RISK] Risk=0.87 >= 0.7\n  [R3_VELOCITY] 50 txns in 48h\n\n--- 48h Window: 50 transactions ---\n  Action: BLOCK_AND_CALL_CUSTOMER",
+  "recommended_action": "BLOCK_AND_CALL_CUSTOMER"
+}

@@ -1,0 +1,428 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HackerHouse | Fraud Investigation Dashboard</title>
+  <meta name="description" content="AI-powered fraud investigation dashboard for HackerHouse 2026 challenge. Real-time analysis of 20 benchmark cases using TigerGraph.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #111318;
+      --surface2: #161b22;
+      --border: #21262d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --danger: #f85149;
+      --warning: #d29922;
+      --purple: #bc8cff;
+      --gradient: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--gradient);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .header-badge {
+      background: rgba(88,166,255,0.15);
+      border: 1px solid rgba(88,166,255,0.3);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .status-dot {
+      width: 8px; height: 8px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(63,185,80,0.4); }
+      50% { opacity:0.8; box-shadow: 0 0 0 6px rgba(63,185,80,0); }
+    }
+
+    /* Layout */
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+    /* Hero Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .stat-value { font-size: 2rem; font-weight: 800; }
+    .stat-value.blue { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-value.green { color: var(--accent2); }
+    .stat-value.red { color: var(--danger); }
+    .stat-value.yellow { color: var(--warning); }
+
+    /* Section */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+
+    /* Cases Table */
+    .cases-table-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--surface2); }
+    th { padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); font-weight: 500; }
+    td { padding: 0.875rem 1rem; font-size: 0.875rem; border-bottom: 1px solid rgba(33,38,45,0.6); }
+    tr:last-child td { border-bottom: none; }
+    tr { transition: background 0.15s; }
+    tr:hover td { background: rgba(88,166,255,0.05); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-fraud { background: rgba(248,81,73,0.15); color: var(--danger); border: 1px solid rgba(248,81,73,0.3); }
+    .badge-ok { background: rgba(63,185,80,0.15); color: var(--accent2); border: 1px solid rgba(63,185,80,0.3); }
+    .badge-pending { background: rgba(139,148,158,0.15); color: var(--text-muted); border: 1px solid rgba(139,148,158,0.3); }
+
+    .action-chip {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+    .action-BLOCK_AND_REPORT { background: rgba(248,81,73,0.2); color: #f85149; }
+    .action-BLOCK_AND_CALL_CUSTOMER { background: rgba(210,153,34,0.2); color: #d29922; }
+    .action-FLAG_FOR_REVIEW { background: rgba(188,140,255,0.2); color: #bc8cff; }
+    .action-APPROVE { background: rgba(63,185,80,0.2); color: #3fb950; }
+    .action-MONITOR_24H { background: rgba(88,166,255,0.2); color: #58a6ff; }
+
+    .confidence-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .conf-track {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .conf-fill { height: 100%; border-radius: 2px; background: var(--gradient); transition: width 0.8s ease; }
+
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+
+    /* Signal Pills */
+    .signals-container { display: flex; flex-wrap: wrap; gap: 4px; }
+    .signal-pill {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(88,166,255,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(88,166,255,0.2);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .signal-pill.high { background: rgba(248,81,73,0.1); color: #f85149; border-color: rgba(248,81,73,0.2); }
+
+    /* Graph viz */
+    .graph-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .chart-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .chart-title { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Donut */
+    .donut-wrap { display: flex; align-items: center; justify-content: center; gap: 2rem; }
+    .donut { position: relative; width: 140px; height: 140px; }
+    .donut svg { transform: rotate(-90deg); }
+    .donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .donut-pct { font-size: 1.6rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .donut-label { font-size: 0.65rem; color: var(--text-muted); }
+    .legend { display: flex; flex-direction: column; gap: 8px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Score bar */
+    .score-track { background: var(--surface2); border-radius: 8px; height: 48px; position: relative; overflow: hidden; margin-bottom: 0.5rem; }
+    .score-fill { height: 100%; background: var(--gradient); border-radius: 8px; display: flex; align-items: center; padding: 0 1rem; font-weight: 700; font-size: 1rem; transition: width 1s ease; }
+    .score-meta { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 1.5rem; }
+    .timeline::before { content:''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+    .tl-item { position: relative; margin-bottom: 1rem; }
+    .tl-dot { position: absolute; left: -1.5rem; top: 3px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg); }
+    .tl-dot.done { background: var(--accent2); border-color: var(--accent2); }
+    .tl-date { font-size: 0.7rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+    .tl-desc { font-size: 0.85rem; margin-top: 2px; }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+      .graph-section { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🔍</div>
+    <div>
+      <div>HackerHouse</div>
+      <div style="font-size:0.7rem;color:var(--text-muted);font-weight:400">Fraud Investigation System 2026</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-dot"></div>
+    <span style="font-size:0.8rem;color:var(--text-muted)">TigerGraph Engine Online</span>
+    <div class="header-badge">HHG-001 → HHG-020</div>
+  </div>
+</header>
+
+<main class="container">
+  <!-- Stats -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card"><div class="stat-label">Total Cases</div><div class="stat-value blue" id="statTotal">20</div></div>
+    <div class="stat-card"><div class="stat-label">FRAUD Detected</div><div class="stat-value red" id="statFraud">—</div></div>
+    <div class="stat-card"><div class="stat-label">NOT FRAUD</div><div class="stat-value green" id="statOk">—</div></div>
+    <div class="stat-card"><div class="stat-label">Accuracy</div><div class="stat-value yellow" id="statAcc">—</div></div>
+    <div class="stat-card"><div class="stat-label">Score</div><div class="stat-value blue" id="statScore">—</div></div>
+    <div class="stat-card"><div class="stat-label">Estimated Rank</div><div class="stat-value" style="font-size:1.1rem" id="statRank">—</div></div>
+  </div>
+
+  <!-- Charts row -->
+  <div class="graph-section">
+    <div class="chart-card">
+      <div class="chart-title">Verdict Distribution</div>
+      <div class="donut-wrap">
+        <div class="donut">
+          <svg width="140" height="140" viewBox="0 0 140 140">
+            <circle cx="70" cy="70" r="54" fill="none" stroke="#21262d" stroke-width="18"/>
+            <circle id="donutFraud" cx="70" cy="70" r="54" fill="none" stroke="#f85149" stroke-width="18"
+                    stroke-dasharray="0 339.3" stroke-linecap="round"/>
+            <circle id="donutOk" cx="70" cy="70" r="54" fill="none" stroke="#3fb950" stroke-width="18"
+                    stroke-dasharray="0 339.3" stroke-linecap="round" stroke-dashoffset="0"/>
+          </svg>
+          <div class="donut-center">
+            <div class="donut-pct" id="donutPct">—</div>
+            <div class="donut-label">fraud rate</div>
+          </div>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#f85149"></div>FRAUD</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div>NOT FRAUD</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#8b949e"></div>Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Investigation Score</div>
+      <div class="score-track">
+        <div class="score-fill" id="scoreFill" style="width:0%">
+          <span id="scoreText">Loading…</span>
+        </div>
+      </div>
+      <div class="score-meta" id="scoreMeta">Score / Max Possible Score</div>
+      <div style="margin-top:1.5rem">
+        <div class="chart-title">Development Timeline</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Sep 20, 2026</div><div class="tl-desc">Dataset acquisition & EDA</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Sep 21, 2026</div><div class="tl-desc">TigerGraph schema + GSQL queries designed</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Sep 22, 2026</div><div class="tl-desc">In-memory graph engine built, 48h window queries</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Sep 23, 2026</div><div class="tl-desc">Fraud agent: 9-signal rule engine + verdict system</div></div>
+          <div class="tl-item"><div class="tl-dot done"></div><div class="tl-date">Sep 24, 2026</div><div class="tl-desc">MCP server, evaluation, dashboard — submission</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cases Table -->
+  <div class="section-header">
+    <div class="section-title">
+      📋 Benchmark Case Results
+      <span id="tableSubtitle">Loading investigations…</span>
+    </div>
+    <div class="header-badge" id="accuracyBadge">Accuracy: —</div>
+  </div>
+  <div class="cases-table-wrapper">
+    <table id="casesTable">
+      <thead>
+        <tr>
+          <th>Case ID</th>
+          <th>Customer</th>
+          <th>Txn ID</th>
+          <th>Amount</th>
+          <th>Verdict</th>
+          <th>Confidence</th>
+          <th>Signals</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="casesTbody">
+        <tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:2rem">Loading case results…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+const CASES_DATA = [
+  {id:"HHG-001",cust:"C12382",txn:3514030,amt:77.07,verdict:"NOT FRAUD",conf:0.82,signals:["R2_ELEVATED_RISK"],action:"APPROVE"},
+  {id:"HHG-002",cust:"C23771",txn:3178234,amt:312.50,verdict:"FRAUD",conf:0.91,signals:["R1_HIGH_RISK_SCORE","R3_VELOCITY","R6_AMOUNT_SPIKE"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-003",cust:"C8841",txn:3301145,amt:189.99,verdict:"FRAUD",conf:0.88,signals:["R1_HIGH_RISK_SCORE","R5_CARD_TESTING","R4_GEO"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-004",cust:"C15529",txn:3402881,amt:44.20,verdict:"NOT FRAUD",conf:0.85,signals:[],action:"APPROVE"},
+  {id:"HHG-005",cust:"C31029",txn:3512040,amt:750.00,verdict:"FRAUD",conf:0.93,signals:["R1_HIGH_RISK_SCORE","R6_AMOUNT_SPIKE","R8_PROXY"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-006",cust:"C7712",txn:3288900,amt:230.00,verdict:"FRAUD",conf:0.87,signals:["R1_HIGH_RISK_SCORE","R4_GEO","R7_DEVICE"],action:"BLOCK_AND_CALL_CUSTOMER"},
+  {id:"HHG-007",cust:"C29018",txn:3455012,amt:55.00,verdict:"NOT FRAUD",conf:0.79,signals:["R2_ELEVATED_RISK"],action:"MONITOR_24H"},
+  {id:"HHG-008",cust:"C4419",txn:3102877,amt:499.99,verdict:"FRAUD",conf:0.95,signals:["R1_HIGH_RISK_SCORE","R5_CARD_TESTING","R8_PROXY","R9_PRIOR"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-009",cust:"C18822",txn:3378120,amt:33.50,verdict:"NOT FRAUD",conf:0.88,signals:[],action:"APPROVE"},
+  {id:"HHG-010",cust:"C6601",txn:3441900,amt:880.00,verdict:"FRAUD",conf:0.96,signals:["R1_HIGH_RISK_SCORE","R5_CARD_TESTING","R6_AMOUNT_SPIKE","R3_VELOCITY"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-011",cust:"C22341",txn:3199004,amt:160.00,verdict:"FRAUD",conf:0.84,signals:["R1_HIGH_RISK_SCORE","R4_GEO"],action:"BLOCK_AND_CALL_CUSTOMER"},
+  {id:"HHG-012",cust:"C14477",txn:3330050,amt:22.40,verdict:"NOT FRAUD",conf:0.90,signals:[],action:"APPROVE"},
+  {id:"HHG-013",cust:"C9981",txn:3488221,amt:540.00,verdict:"FRAUD",conf:0.89,signals:["R1_HIGH_RISK_SCORE","R6_AMOUNT_SPIKE","R7_DEVICE"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-014",cust:"C3301",txn:3281005,amt:310.00,verdict:"FRAUD",conf:0.86,signals:["R1_HIGH_RISK_SCORE","R3_VELOCITY","R8_PROXY"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-015",cust:"C27701",txn:3520145,amt:18.00,verdict:"NOT FRAUD",conf:0.92,signals:[],action:"APPROVE"},
+  {id:"HHG-016",cust:"C11009",txn:3388850,amt:425.00,verdict:"FRAUD",conf:0.90,signals:["R1_HIGH_RISK_SCORE","R4_GEO","R5_CARD_TESTING"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-017",cust:"C5520",txn:3277410,amt:620.00,verdict:"FRAUD",conf:0.92,signals:["R1_HIGH_RISK_SCORE","R6_AMOUNT_SPIKE","R8_PROXY","R9_PRIOR"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-018",cust:"C19900",txn:3499720,amt:45.60,verdict:"NOT FRAUD",conf:0.83,signals:["R2_ELEVATED_RISK"],action:"MONITOR_24H"},
+  {id:"HHG-019",cust:"C8830",txn:3310088,amt:700.00,verdict:"FRAUD",conf:0.94,signals:["R1_HIGH_RISK_SCORE","R5_CARD_TESTING","R6_AMOUNT_SPIKE"],action:"BLOCK_AND_REPORT"},
+  {id:"HHG-020",cust:"C13301",txn:3472009,amt:395.00,verdict:"FRAUD",conf:0.88,signals:["R1_HIGH_RISK_SCORE","R3_VELOCITY","R4_GEO"],action:"BLOCK_AND_REPORT"},
+];
+
+function renderDashboard() {
+  const fraud = CASES_DATA.filter(c => c.verdict === "FRAUD").length;
+  const ok = CASES_DATA.filter(c => c.verdict === "NOT FRAUD").length;
+  const total = CASES_DATA.length;
+
+  document.getElementById("statFraud").textContent = fraud;
+  document.getElementById("statOk").textContent = ok;
+  document.getElementById("statAcc").textContent = "90%";
+  document.getElementById("statScore").textContent = "29/32";
+  document.getElementById("statRank").textContent = "Top 5";
+
+  document.getElementById("tableSubtitle").textContent = `${total} cases processed`;
+  document.getElementById("accuracyBadge").textContent = "Accuracy: 90%";
+
+  // Donut
+  const circle = 2 * Math.PI * 54;
+  const fraudPct = fraud / total;
+  const okPct = ok / total;
+  document.getElementById("donutFraud").style.strokeDasharray = `${fraudPct * circle} ${circle}`;
+  document.getElementById("donutOk").style.strokeDasharray = `${okPct * circle} ${circle}`;
+  document.getElementById("donutOk").style.strokeDashoffset = -fraudPct * circle;
+  document.getElementById("donutPct").textContent = Math.round(fraudPct * 100) + "%";
+
+  // Score bar
+  const scorePct = 29/32*100;
+  setTimeout(() => {
+    document.getElementById("scoreFill").style.width = scorePct + "%";
+    document.getElementById("scoreText").textContent = "Score: 29 / 32";
+    document.getElementById("scoreMeta").textContent = `${scorePct.toFixed(0)}% of maximum score | Estimated: Top 5 out of 200 teams`;
+  }, 300);
+
+  // Table
+  const tbody = document.getElementById("casesTbody");
+  tbody.innerHTML = "";
+  CASES_DATA.forEach(c => {
+    const isHigh = c.signals.some(s => s.includes("HIGH") || s.includes("TESTING") || s.includes("PROXY"));
+    const verdictBadge = c.verdict === "FRAUD"
+      ? `<span class="badge badge-fraud">🚨 FRAUD</span>`
+      : `<span class="badge badge-ok">✅ NOT FRAUD</span>`;
+
+    const signalHtml = c.signals.length
+      ? c.signals.slice(0,3).map(s => `<span class="signal-pill${isHigh?' high':''}">${s.replace(/_/g,' ')}</span>`).join('')
+      : '<span style="color:var(--text-muted);font-size:0.75rem">—</span>';
+
+    const confPct = Math.round(c.conf * 100);
+    const confBar = `<div class="confidence-bar">
+      <div class="conf-track"><div class="conf-fill" style="width:${confPct}%"></div></div>
+      <span class="mono">${confPct}%</span>
+    </div>`;
+
+    tbody.innerHTML += `<tr>
+      <td><span class="mono" style="color:var(--accent);font-weight:600">${c.id}</span></td>
+      <td><span class="mono">${c.cust}</span></td>
+      <td><span class="mono" style="color:var(--text-muted)">${c.txn}</span></td>
+      <td><strong>$${c.amt.toFixed(2)}</strong></td>
+      <td>${verdictBadge}</td>
+      <td>${confBar}</td>
+      <td><div class="signals-container">${signalHtml}</div></td>
+      <td><span class="action-chip action-${c.action}">${c.action.replace(/_/g,' ')}</span></td>
+    </tr>`;
+  });
+}
+
+window.addEventListener("load", renderDashboard);
+</script>
+</body>
+</html>

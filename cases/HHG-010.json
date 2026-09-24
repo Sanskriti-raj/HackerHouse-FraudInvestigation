@@ -1,0 +1,97 @@
+{
+  "case_id": "HHG-010",
+  "customer_id": "C10434",
+  "flagged_txn_id": 3506725,
+  "investigated_at": "2026-09-24T17:58:05.979094Z",
+  "verdict": "FRAUD",
+  "confidence": 0.827,
+  "fraud_score": 0.827,
+  "model_risk_score": 0.9,
+  "signals": [
+    {
+      "code": "R1_HIGH_RISK",
+      "description": "Risk=0.90 >= 0.7",
+      "weight": 2.5,
+      "evidence": {
+        "risk": 0.9
+      }
+    },
+    {
+      "code": "R6_AMOUNT_SPIKE",
+      "description": "$1000.03 = 8.3x mean $120.37",
+      "weight": 1.5,
+      "evidence": {
+        "amt": 1000.03,
+        "mean": 120.37
+      }
+    },
+    {
+      "code": "R7_SHARED_DEVICE",
+      "description": "Device shared by 1249 txns",
+      "weight": 1.2,
+      "evidence": {
+        "dev": "Windows | Windows 10 | edge 16.0 | 1366x768",
+        "shared": 1249
+      }
+    }
+  ],
+  "signal_count": 3,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 1
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 14,
+        "mean_amount": 120.37,
+        "max_amount": 670.04,
+        "std_amount": 163.46,
+        "typical_regions": [
+          "469.0",
+          "204.0",
+          "220.0"
+        ],
+        "primary_region": "469.0",
+        "channels": {
+          "in_person": 8,
+          "online": 6
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "device_profile": "Windows | Windows 10 | edge 16.0 | 1366x768",
+        "shared_txn_count": 1249,
+        "sample_txn_ids": [
+          "3004742",
+          "3016124",
+          "3012832",
+          "3012901",
+          "3001244",
+          "3025812",
+          "3025912",
+          "3011920",
+          "3016984",
+          "3011316"
+        ],
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3506725"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-010 ===\nCustomer: C10434 | Flagged Transaction: 3506725\nAmount: $1000.03 | Timestamp: 2016-12-02 15:18:27\n\nVERDICT: FRAUD (Confidence: 82.7%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 14\n  Historical mean: $120.37\n  Typical regions: ['469.0', '204.0', '220.0']\n\n--- Fraud Signals ---\n  [R1_HIGH_RISK] Risk=0.90 >= 0.7\n  [R6_AMOUNT_SPIKE] $1000.03 = 8.3x mean $120.37\n  [R7_SHARED_DEVICE] Device shared by 1249 txns\n\n--- 48h Window: 1 transactions ---\n  Action: BLOCK_AND_CALL_CUSTOMER",
+  "recommended_action": "BLOCK_AND_CALL_CUSTOMER"
+}

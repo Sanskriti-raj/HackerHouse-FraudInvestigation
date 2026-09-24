@@ -1,0 +1,103 @@
+{
+  "case_id": "HHG-014",
+  "customer_id": "C13487",
+  "flagged_txn_id": 3478561,
+  "investigated_at": "2026-09-24T17:58:06.314217Z",
+  "verdict": "NOT FRAUD",
+  "confidence": 0.54,
+  "fraud_score": 0.46,
+  "model_risk_score": 0.0,
+  "signals": [
+    {
+      "code": "R7_SHARED_DEVICE",
+      "description": "Device shared by 114 txns",
+      "weight": 1.2,
+      "evidence": {
+        "dev": "SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080",
+        "shared": 114
+      }
+    },
+    {
+      "code": "R8_PROXY",
+      "description": "Proxy/VPN: IP_PROXY:ANONYMOUS",
+      "weight": 2.0,
+      "evidence": {
+        "proxy": "IP_PROXY:ANONYMOUS"
+      }
+    },
+    {
+      "code": "R9_PRIOR_LINK",
+      "description": "Linked to 3 prior fraud cases",
+      "weight": 1.5,
+      "evidence": {
+        "cases": [
+          "CC-0334",
+          "CC-0590",
+          "CC-5122"
+        ]
+      }
+    }
+  ],
+  "signal_count": 3,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 3
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 42,
+        "mean_amount": 54.53,
+        "max_amount": 225.94,
+        "std_amount": 36.3,
+        "typical_regions": [
+          "191.0",
+          "272.0"
+        ],
+        "primary_region": "191.0",
+        "channels": {
+          "in_person": 41,
+          "online": 1
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "device_profile": "SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080",
+        "shared_txn_count": 114,
+        "sample_txn_ids": [
+          "3202391",
+          "3203266",
+          "3220181",
+          "3186106",
+          "3224927",
+          "3193853",
+          "3179313",
+          "3206662",
+          "3208914",
+          "3205831"
+        ],
+        "linked_closed_cases": [
+          "CC-0334",
+          "CC-0590",
+          "CC-5122"
+        ]
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3478561"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-014 ===\nCustomer: C13487 | Flagged Transaction: 3478561\nAmount: $74.96 | Timestamp: 2016-11-22 16:11:00\n\nVERDICT: NOT FRAUD (Confidence: 54.0%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 42\n  Historical mean: $54.53\n  Typical regions: ['191.0', '272.0']\n\n--- Fraud Signals ---\n  [R7_SHARED_DEVICE] Device shared by 114 txns\n  [R8_PROXY] Proxy/VPN: IP_PROXY:ANONYMOUS\n  [R9_PRIOR_LINK] Linked to 3 prior fraud cases\n\n--- 48h Window: 3 transactions ---\n  Action: MONITOR_24H",
+  "recommended_action": "MONITOR_24H"
+}

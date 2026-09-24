@@ -1,0 +1,96 @@
+{
+  "case_id": "HHG-013",
+  "customer_id": "C07671",
+  "flagged_txn_id": 3526826,
+  "investigated_at": "2026-09-24T17:58:06.232491Z",
+  "verdict": "FRAUD",
+  "confidence": 0.778,
+  "fraud_score": 0.778,
+  "model_risk_score": 0.76,
+  "signals": [
+    {
+      "code": "R1_HIGH_RISK",
+      "description": "Risk=0.76 >= 0.7",
+      "weight": 2.5,
+      "evidence": {
+        "risk": 0.76
+      }
+    },
+    {
+      "code": "R3_VELOCITY",
+      "description": "34 txns in 48h",
+      "weight": 1.5,
+      "evidence": {
+        "count": 34
+      }
+    },
+    {
+      "code": "R7_SHARED_DEVICE",
+      "description": "Device shared by 1531 txns",
+      "weight": 1.2,
+      "evidence": {
+        "dev": "Windows | UnknownOS | chrome 66.0 | UnknownScreen",
+        "shared": 1531
+      }
+    }
+  ],
+  "signal_count": 3,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 34
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 813,
+        "mean_amount": 115.24,
+        "max_amount": 3891.01,
+        "std_amount": 251.5,
+        "typical_regions": [
+          "264.0",
+          "310.0",
+          "110.0"
+        ],
+        "primary_region": "264.0",
+        "channels": {
+          "in_person": 809,
+          "online": 4
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "device_profile": "Windows | UnknownOS | chrome 66.0 | UnknownScreen",
+        "shared_txn_count": 1531,
+        "sample_txn_ids": [
+          "3515438",
+          "3527033",
+          "3512449",
+          "3512451",
+          "3512900",
+          "3527500",
+          "3524719",
+          "3524766",
+          "3516192",
+          "3525012"
+        ],
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3526826"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-013 ===\nCustomer: C07671 | Flagged Transaction: 3526826\nAmount: $35.66 | Timestamp: 2016-12-09 02:39:29\n\nVERDICT: FRAUD (Confidence: 77.8%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 813\n  Historical mean: $115.24\n  Typical regions: ['264.0', '310.0', '110.0']\n\n--- Fraud Signals ---\n  [R1_HIGH_RISK] Risk=0.76 >= 0.7\n  [R3_VELOCITY] 34 txns in 48h\n  [R7_SHARED_DEVICE] Device shared by 1531 txns\n\n--- 48h Window: 34 transactions ---\n  Action: BLOCK_AND_CALL_CUSTOMER",
+  "recommended_action": "BLOCK_AND_CALL_CUSTOMER"
+}

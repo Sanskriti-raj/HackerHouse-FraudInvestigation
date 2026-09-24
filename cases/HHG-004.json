@@ -1,0 +1,73 @@
+{
+  "case_id": "HHG-004",
+  "customer_id": "C08106",
+  "flagged_txn_id": 3583227,
+  "investigated_at": "2026-09-24T17:58:05.515221Z",
+  "verdict": "NOT FRAUD",
+  "confidence": 0.607,
+  "fraud_score": 0.393,
+  "model_risk_score": 0.0,
+  "signals": [
+    {
+      "code": "R3_VELOCITY",
+      "description": "8 txns in 48h",
+      "weight": 1.5,
+      "evidence": {
+        "count": 8
+      }
+    },
+    {
+      "code": "R6_AMOUNT_SPIKE",
+      "description": "$128.33 = 3.9x mean $32.93",
+      "weight": 1.5,
+      "evidence": {
+        "amt": 128.33,
+        "mean": 32.93
+      }
+    }
+  ],
+  "signal_count": 2,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 8
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 88,
+        "mean_amount": 32.93,
+        "max_amount": 138.89,
+        "std_amount": 24.62,
+        "typical_regions": [
+          "284.0"
+        ],
+        "primary_region": "284.0",
+        "channels": {
+          "online": 88
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "shared_count": 0,
+        "connected_cards": [],
+        "closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3583227"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-004 ===\nCustomer: C08106 | Flagged Transaction: 3583227\nAmount: $128.33 | Timestamp: 2016-12-29 01:53:54\n\nVERDICT: NOT FRAUD (Confidence: 60.7%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 88\n  Historical mean: $32.93\n  Typical regions: ['284.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 8 txns in 48h\n  [R6_AMOUNT_SPIKE] $128.33 = 3.9x mean $32.93\n\n--- 48h Window: 8 transactions ---\n  Action: MONITOR_24H",
+  "recommended_action": "MONITOR_24H"
+}

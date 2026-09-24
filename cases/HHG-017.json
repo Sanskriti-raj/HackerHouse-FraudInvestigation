@@ -1,0 +1,111 @@
+{
+  "case_id": "HHG-017",
+  "customer_id": "C04570",
+  "flagged_txn_id": 3450629,
+  "investigated_at": "2026-09-24T17:58:06.552841Z",
+  "verdict": "FRAUD",
+  "confidence": 0.699,
+  "fraud_score": 0.699,
+  "model_risk_score": 0.57,
+  "signals": [
+    {
+      "code": "R2_ELEVATED_RISK",
+      "description": "Risk=0.57 elevated",
+      "weight": 1.2,
+      "evidence": {
+        "risk": 0.57
+      }
+    },
+    {
+      "code": "R4_GEO_ANOMALY",
+      "description": "Region 204.0 not in typical ['315.0', '299.0', '325.0']",
+      "weight": 1.8,
+      "evidence": {
+        "flagged": "204.0",
+        "typical": [
+          "315.0",
+          "299.0",
+          "325.0"
+        ]
+      }
+    },
+    {
+      "code": "R7_SHARED_DEVICE",
+      "description": "Device shared by 621 txns",
+      "weight": 1.2,
+      "evidence": {
+        "dev": "Windows | Windows 10 | chrome 65.0 | 1920x1080",
+        "shared": 621
+      }
+    },
+    {
+      "code": "R8_PROXY",
+      "description": "Proxy/VPN: IP_PROXY:HIDDEN",
+      "weight": 2.0,
+      "evidence": {
+        "proxy": "IP_PROXY:HIDDEN"
+      }
+    }
+  ],
+  "signal_count": 4,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 3
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 20,
+        "mean_amount": 284.83,
+        "max_amount": 772.92,
+        "std_amount": 205.21,
+        "typical_regions": [
+          "325.0",
+          "299.0",
+          "315.0"
+        ],
+        "primary_region": "325.0",
+        "channels": {
+          "in_person": 14,
+          "online": 6
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "device_profile": "Windows | Windows 10 | chrome 65.0 | 1920x1080",
+        "shared_txn_count": 621,
+        "sample_txn_ids": [
+          "3376127",
+          "3379967",
+          "3383981",
+          "3387407",
+          "3387413",
+          "3385025",
+          "3385407",
+          "3385480",
+          "3381229",
+          "3381241"
+        ],
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3450436",
+          "3450503",
+          "3450629"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-017 ===\nCustomer: C04570 | Flagged Transaction: 3450629\nAmount: $100.09 | Timestamp: 2016-11-11 23:46:24\n\nVERDICT: FRAUD (Confidence: 69.9%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 20\n  Historical mean: $284.83\n  Typical regions: ['325.0', '299.0', '315.0']\n\n--- Fraud Signals ---\n  [R2_ELEVATED_RISK] Risk=0.57 elevated\n  [R4_GEO_ANOMALY] Region 204.0 not in typical ['315.0', '299.0', '325.0']\n  [R7_SHARED_DEVICE] Device shared by 621 txns\n  [R8_PROXY] Proxy/VPN: IP_PROXY:HIDDEN\n\n--- 48h Window: 3 transactions ---\n  Action: FLAG_FOR_REVIEW",
+  "recommended_action": "FLAG_FOR_REVIEW"
+}

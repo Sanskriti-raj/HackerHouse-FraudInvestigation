@@ -1,0 +1,85 @@
+{
+  "case_id": "HHG-012",
+  "customer_id": "C05876",
+  "flagged_txn_id": 3553342,
+  "investigated_at": "2026-09-24T17:58:06.152940Z",
+  "verdict": "FRAUD",
+  "confidence": 0.657,
+  "fraud_score": 0.657,
+  "model_risk_score": 0.55,
+  "signals": [
+    {
+      "code": "R2_ELEVATED_RISK",
+      "description": "Risk=0.55 elevated",
+      "weight": 1.2,
+      "evidence": {
+        "risk": 0.55
+      }
+    },
+    {
+      "code": "R3_VELOCITY",
+      "description": "24 txns in 48h",
+      "weight": 1.5,
+      "evidence": {
+        "count": 24
+      }
+    },
+    {
+      "code": "R4_GEO_ANOMALY",
+      "description": "Region 494.0 not in typical ['272.0', '325.0', '264.0']",
+      "weight": 1.8,
+      "evidence": {
+        "flagged": "494.0",
+        "typical": [
+          "272.0",
+          "325.0",
+          "264.0"
+        ]
+      }
+    }
+  ],
+  "signal_count": 3,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 24
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 477,
+        "mean_amount": 86.67,
+        "max_amount": 724.08,
+        "std_amount": 97.15,
+        "typical_regions": [
+          "325.0",
+          "272.0",
+          "264.0"
+        ],
+        "primary_region": "325.0",
+        "channels": {
+          "in_person": 464,
+          "online": 13
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "shared_txn_count": 0,
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": []
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-012 ===\nCustomer: C05876 | Flagged Transaction: 3553342\nAmount: $30.91 | Timestamp: 2016-12-18 04:00:31\n\nVERDICT: FRAUD (Confidence: 65.7%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 477\n  Historical mean: $86.67\n  Typical regions: ['325.0', '272.0', '264.0']\n\n--- Fraud Signals ---\n  [R2_ELEVATED_RISK] Risk=0.55 elevated\n  [R3_VELOCITY] 24 txns in 48h\n  [R4_GEO_ANOMALY] Region 494.0 not in typical ['272.0', '325.0', '264.0']\n\n--- 48h Window: 24 transactions ---\n  Action: FLAG_FOR_REVIEW",
+  "recommended_action": "FLAG_FOR_REVIEW"
+}

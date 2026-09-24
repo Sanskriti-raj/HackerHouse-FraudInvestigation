@@ -1,0 +1,72 @@
+{
+  "case_id": "HHG-009",
+  "customer_id": "C08299",
+  "flagged_txn_id": 3581141,
+  "investigated_at": "2026-09-24T17:58:05.912810Z",
+  "verdict": "NOT FRAUD",
+  "confidence": 0.668,
+  "fraud_score": 0.332,
+  "model_risk_score": 0.0,
+  "signals": [
+    {
+      "code": "R4_GEO_ANOMALY",
+      "description": "Region 203.0 not in typical ['330.0', '337.0', '204.0']",
+      "weight": 1.8,
+      "evidence": {
+        "flagged": "203.0",
+        "typical": [
+          "330.0",
+          "337.0",
+          "204.0"
+        ]
+      }
+    }
+  ],
+  "signal_count": 1,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 1
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 20,
+        "mean_amount": 57.43,
+        "max_amount": 343.94,
+        "std_amount": 71.4,
+        "typical_regions": [
+          "330.0",
+          "204.0",
+          "337.0"
+        ],
+        "primary_region": "330.0",
+        "channels": {
+          "online": 19,
+          "in_person": 1
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "shared_count": 0,
+        "connected_cards": [],
+        "closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3581141"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-009 ===\nCustomer: C08299 | Flagged Transaction: 3581141\nAmount: $30.02 | Timestamp: 2016-12-28 12:10:53\n\nVERDICT: NOT FRAUD (Confidence: 66.8%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 20\n  Historical mean: $57.43\n  Typical regions: ['330.0', '204.0', '337.0']\n\n--- Fraud Signals ---\n  [R4_GEO_ANOMALY] Region 203.0 not in typical ['330.0', '337.0', '204.0']\n\n--- 48h Window: 1 transactions ---\n  Action: MONITOR_24H",
+  "recommended_action": "MONITOR_24H"
+}

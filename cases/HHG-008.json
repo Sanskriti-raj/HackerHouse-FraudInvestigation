@@ -1,0 +1,69 @@
+{
+  "case_id": "HHG-008",
+  "customer_id": "C13171",
+  "flagged_txn_id": 3558054,
+  "investigated_at": "2026-09-24T17:58:05.846692Z",
+  "verdict": "NOT FRAUD",
+  "confidence": 0.678,
+  "fraud_score": 0.322,
+  "model_risk_score": 0.0,
+  "signals": [
+    {
+      "code": "R3_VELOCITY",
+      "description": "17 txns in 48h",
+      "weight": 1.5,
+      "evidence": {
+        "count": 17
+      }
+    }
+  ],
+  "signal_count": 1,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 17
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 457,
+        "mean_amount": 52.49,
+        "max_amount": 407.32,
+        "std_amount": 50.08,
+        "typical_regions": [
+          "284.0",
+          "465.0",
+          "130.0"
+        ],
+        "primary_region": "284.0",
+        "channels": {
+          "online": 456,
+          "in_person": 1
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "shared_count": 0,
+        "connected_cards": [],
+        "closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3557979",
+          "3557987",
+          "3558054"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-008 ===\nCustomer: C13171 | Flagged Transaction: 3558054\nAmount: $55.68 | Timestamp: 2016-12-19 22:08:56\n\nVERDICT: NOT FRAUD (Confidence: 67.8%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 457\n  Historical mean: $52.49\n  Typical regions: ['284.0', '465.0', '130.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 17 txns in 48h\n\n--- 48h Window: 17 transactions ---\n  Action: MONITOR_24H",
+  "recommended_action": "MONITOR_24H"
+}

@@ -1,0 +1,92 @@
+{
+  "case_id": "HHG-011",
+  "customer_id": "C11923",
+  "flagged_txn_id": 3583368,
+  "investigated_at": "2026-09-24T17:58:06.082262Z",
+  "verdict": "NOT FRAUD",
+  "confidence": 0.541,
+  "fraud_score": 0.459,
+  "model_risk_score": 0.0,
+  "signals": [
+    {
+      "code": "R3_VELOCITY",
+      "description": "84 txns in 48h",
+      "weight": 1.5,
+      "evidence": {
+        "count": 84
+      }
+    },
+    {
+      "code": "R6_AMOUNT_SPIKE",
+      "description": "$131.30 = 3.3x mean $39.29",
+      "weight": 1.5,
+      "evidence": {
+        "amt": 131.3,
+        "mean": 39.29
+      }
+    },
+    {
+      "code": "R7_SHARED_DEVICE",
+      "description": "Device shared by 4 txns",
+      "weight": 1.2,
+      "evidence": {
+        "dev": "SM-G610F Build/NRD90M | UnknownOS | chrome 66.0 for android | UnknownScreen",
+        "shared": 4
+      }
+    }
+  ],
+  "signal_count": 3,
+  "investigation_steps": [
+    {
+      "step": "card_window_48h",
+      "txns_found": 84
+    },
+    {
+      "step": "customer_baseline",
+      "result": {
+        "total_prior_txns": 4319,
+        "mean_amount": 39.29,
+        "max_amount": 323.09,
+        "std_amount": 37.07,
+        "typical_regions": [
+          "284.0",
+          "465.0",
+          "155.0"
+        ],
+        "primary_region": "284.0",
+        "channels": {
+          "online": 4319
+        }
+      }
+    },
+    {
+      "step": "device_neighbors",
+      "result": {
+        "device_profile": "SM-G610F Build/NRD90M | UnknownOS | chrome 66.0 for android | UnknownScreen",
+        "shared_txn_count": 4,
+        "sample_txn_ids": [
+          "3583368",
+          "3588413",
+          "3582730",
+          "3582750"
+        ],
+        "linked_closed_cases": []
+      }
+    },
+    {
+      "step": "card_testing",
+      "result": {
+        "is_card_testing": false,
+        "micro_auth_count": 0,
+        "micro_auth_txns": [],
+        "larger_purchases": [
+          "3583199",
+          "3583348",
+          "3583368"
+        ]
+      }
+    }
+  ],
+  "analyst_narrative": "=== Investigation Report: HHG-011 ===\nCustomer: C11923 | Flagged Transaction: 3583368\nAmount: $131.30 | Timestamp: 2016-12-29 03:27:44\n\nVERDICT: NOT FRAUD (Confidence: 54.1%)\n\n--- Historical Baseline ---\n  Prior transactions (90d): 4319\n  Historical mean: $39.29\n  Typical regions: ['284.0', '465.0', '155.0']\n\n--- Fraud Signals ---\n  [R3_VELOCITY] 84 txns in 48h\n  [R6_AMOUNT_SPIKE] $131.30 = 3.3x mean $39.29\n  [R7_SHARED_DEVICE] Device shared by 4 txns\n\n--- 48h Window: 84 transactions ---\n  Action: MONITOR_24H",
+  "recommended_action": "MONITOR_24H"
+}
